@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cun.yun.card.admin.dal.dao.CooperativePartnerLinkMapper">
+  <resultMap id="BaseResultMap" type="cun.yun.card.admin.dal.model.CooperativePartnerLink">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="cooperative_partner_id" jdbcType="BIGINT" property="cooperativePartnerId" />
+    <result column="url" jdbcType="VARCHAR" property="url" />
+    <result column="link_type" jdbcType="INTEGER" property="linkType" />
+    <result column="is_employ" jdbcType="INTEGER" property="isEmploy" />
+    <result column="updated_time" jdbcType="TIMESTAMP" property="updatedTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, cooperative_partner_id, url, link_type, is_employ, updated_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from cooperative_partner_link
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <insert id="insert" parameterType="cun.yun.card.admin.dal.model.CooperativePartnerLink">
+    insert into cooperative_partner_link (id, cooperative_partner_id, url, 
+      link_type, is_employ, updated_time
+      )
+    values (#{id,jdbcType=BIGINT}, #{cooperativePartnerId,jdbcType=BIGINT}, #{url,jdbcType=VARCHAR}, 
+      #{linkType,jdbcType=INTEGER}, #{isEmploy,jdbcType=INTEGER}, #{updatedTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="cun.yun.card.admin.dal.model.CooperativePartnerLink">
+    insert into cooperative_partner_link
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="cooperativePartnerId != null">
+        cooperative_partner_id,
+      </if>
+      <if test="url != null">
+        url,
+      </if>
+      <if test="linkType != null">
+        link_type,
+      </if>
+      <if test="isEmploy != null">
+        is_employ,
+      </if>
+      <if test="updatedTime != null">
+        updated_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="cooperativePartnerId != null">
+        #{cooperativePartnerId,jdbcType=BIGINT},
+      </if>
+      <if test="url != null">
+        #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="linkType != null">
+        #{linkType,jdbcType=INTEGER},
+      </if>
+      <if test="isEmploy != null">
+        #{isEmploy,jdbcType=INTEGER},
+      </if>
+      <if test="updatedTime != null">
+        #{updatedTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cun.yun.card.admin.dal.model.CooperativePartnerLink">
+    update cooperative_partner_link
+    <set>
+      <if test="cooperativePartnerId != null">
+        cooperative_partner_id = #{cooperativePartnerId,jdbcType=BIGINT},
+      </if>
+      <if test="url != null">
+        url = #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="linkType != null">
+        link_type = #{linkType,jdbcType=INTEGER},
+      </if>
+      <if test="isEmploy != null">
+        is_employ = #{isEmploy,jdbcType=INTEGER},
+      </if>
+      <if test="updatedTime != null">
+        updated_time = #{updatedTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cun.yun.card.admin.dal.model.CooperativePartnerLink">
+    update cooperative_partner_link
+    set cooperative_partner_id = #{cooperativePartnerId,jdbcType=BIGINT},
+      url = #{url,jdbcType=VARCHAR},
+      link_type = #{linkType,jdbcType=INTEGER},
+      is_employ = #{isEmploy,jdbcType=INTEGER},
+      updated_time = #{updatedTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

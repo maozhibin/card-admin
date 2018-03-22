@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cun.yun.card.admin.dal.dao.LoanMapper">
+  <resultMap id="BaseResultMap" type="cun.yun.card.admin.dal.model.Loan">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="price" jdbcType="DECIMAL" property="price" />
+    <result column="limit_min" jdbcType="DECIMAL" property="limitMin" />
+    <result column="limit_max" jdbcType="DECIMAL" property="limitMax" />
+    <result column="money_rate" jdbcType="DOUBLE" property="moneyRate" />
+    <result column="image" jdbcType="VARCHAR" property="image" />
+    <result column="is_employ" jdbcType="INTEGER" property="isEmploy" />
+    <result column="updated_time" jdbcType="TIMESTAMP" property="updatedTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, name, price, limit_min, limit_max, money_rate, image, is_employ, updated_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from loan
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <insert id="insert" parameterType="cun.yun.card.admin.dal.model.Loan">
+    insert into loan (id, name, price, 
+      limit_min, limit_max, money_rate, 
+      image, is_employ, updated_time
+      )
+    values (#{id,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{price,jdbcType=DECIMAL}, 
+      #{limitMin,jdbcType=DECIMAL}, #{limitMax,jdbcType=DECIMAL}, #{moneyRate,jdbcType=DOUBLE}, 
+      #{image,jdbcType=VARCHAR}, #{isEmploy,jdbcType=INTEGER}, #{updatedTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="cun.yun.card.admin.dal.model.Loan">
+    insert into loan
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="price != null">
+        price,
+      </if>
+      <if test="limitMin != null">
+        limit_min,
+      </if>
+      <if test="limitMax != null">
+        limit_max,
+      </if>
+      <if test="moneyRate != null">
+        money_rate,
+      </if>
+      <if test="image != null">
+        image,
+      </if>
+      <if test="isEmploy != null">
+        is_employ,
+      </if>
+      <if test="updatedTime != null">
+        updated_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null">
+        #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="limitMin != null">
+        #{limitMin,jdbcType=DECIMAL},
+      </if>
+      <if test="limitMax != null">
+        #{limitMax,jdbcType=DECIMAL},
+      </if>
+      <if test="moneyRate != null">
+        #{moneyRate,jdbcType=DOUBLE},
+      </if>
+      <if test="image != null">
+        #{image,jdbcType=VARCHAR},
+      </if>
+      <if test="isEmploy != null">
+        #{isEmploy,jdbcType=INTEGER},
+      </if>
+      <if test="updatedTime != null">
+        #{updatedTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cun.yun.card.admin.dal.model.Loan">
+    update loan
+    <set>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null">
+        price = #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="limitMin != null">
+        limit_min = #{limitMin,jdbcType=DECIMAL},
+      </if>
+      <if test="limitMax != null">
+        limit_max = #{limitMax,jdbcType=DECIMAL},
+      </if>
+      <if test="moneyRate != null">
+        money_rate = #{moneyRate,jdbcType=DOUBLE},
+      </if>
+      <if test="image != null">
+        image = #{image,jdbcType=VARCHAR},
+      </if>
+      <if test="isEmploy != null">
+        is_employ = #{isEmploy,jdbcType=INTEGER},
+      </if>
+      <if test="updatedTime != null">
+        updated_time = #{updatedTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cun.yun.card.admin.dal.model.Loan">
+    update loan
+    set name = #{name,jdbcType=VARCHAR},
+      price = #{price,jdbcType=DECIMAL},
+      limit_min = #{limitMin,jdbcType=DECIMAL},
+      limit_max = #{limitMax,jdbcType=DECIMAL},
+      money_rate = #{moneyRate,jdbcType=DOUBLE},
+      image = #{image,jdbcType=VARCHAR},
+      is_employ = #{isEmploy,jdbcType=INTEGER},
+      updated_time = #{updatedTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cun.yun.card.admin.dal.dao.CooperativeProxyPriceMapper">
+  <resultMap id="BaseResultMap" type="cun.yun.card.admin.dal.model.CooperativeProxyPrice">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="bank_or_loan_id" jdbcType="BIGINT" property="bankOrLoanId" />
+    <result column="type" jdbcType="INTEGER" property="type" />
+    <result column="price" jdbcType="DECIMAL" property="price" />
+    <result column="is_employ" jdbcType="CHAR" property="isEmploy" />
+    <result column="updated_time" jdbcType="TIMESTAMP" property="updatedTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, bank_or_loan_id, type, price, is_employ, updated_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from cooperative_proxy_price
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <insert id="insert" parameterType="cun.yun.card.admin.dal.model.CooperativeProxyPrice">
+    insert into cooperative_proxy_price (id, bank_or_loan_id, type, 
+      price, is_employ, updated_time
+      )
+    values (#{id,jdbcType=BIGINT}, #{bankOrLoanId,jdbcType=BIGINT}, #{type,jdbcType=INTEGER}, 
+      #{price,jdbcType=DECIMAL}, #{isEmploy,jdbcType=CHAR}, #{updatedTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="cun.yun.card.admin.dal.model.CooperativeProxyPrice">
+    insert into cooperative_proxy_price
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="bankOrLoanId != null">
+        bank_or_loan_id,
+      </if>
+      <if test="type != null">
+        type,
+      </if>
+      <if test="price != null">
+        price,
+      </if>
+      <if test="isEmploy != null">
+        is_employ,
+      </if>
+      <if test="updatedTime != null">
+        updated_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="bankOrLoanId != null">
+        #{bankOrLoanId,jdbcType=BIGINT},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="price != null">
+        #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="isEmploy != null">
+        #{isEmploy,jdbcType=CHAR},
+      </if>
+      <if test="updatedTime != null">
+        #{updatedTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cun.yun.card.admin.dal.model.CooperativeProxyPrice">
+    update cooperative_proxy_price
+    <set>
+      <if test="bankOrLoanId != null">
+        bank_or_loan_id = #{bankOrLoanId,jdbcType=BIGINT},
+      </if>
+      <if test="type != null">
+        type = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="price != null">
+        price = #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="isEmploy != null">
+        is_employ = #{isEmploy,jdbcType=CHAR},
+      </if>
+      <if test="updatedTime != null">
+        updated_time = #{updatedTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cun.yun.card.admin.dal.model.CooperativeProxyPrice">
+    update cooperative_proxy_price
+    set bank_or_loan_id = #{bankOrLoanId,jdbcType=BIGINT},
+      type = #{type,jdbcType=INTEGER},
+      price = #{price,jdbcType=DECIMAL},
+      is_employ = #{isEmploy,jdbcType=CHAR},
+      updated_time = #{updatedTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

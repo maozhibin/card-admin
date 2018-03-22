@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cun.yun.card.admin.dal.dao.MenuMapper">
+  <resultMap id="BaseResultMap" type="cun.yun.card.admin.dal.model.Menu">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="url" jdbcType="VARCHAR" property="url" />
+    <result column="parent_id" jdbcType="BIGINT" property="parentId" />
+    <result column="is_menu" jdbcType="INTEGER" property="isMenu" />
+    <result column="is_employ" jdbcType="INTEGER" property="isEmploy" />
+    <result column="created_time" jdbcType="TIMESTAMP" property="createdTime" />
+    <result column="updated_time" jdbcType="TIMESTAMP" property="updatedTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, name, url, parent_id, is_menu, is_employ, created_time, updated_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from menu
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <insert id="insert" parameterType="cun.yun.card.admin.dal.model.Menu">
+    insert into menu (id, name, url, 
+      parent_id, is_menu, is_employ, 
+      created_time, updated_time)
+    values (#{id,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR}, 
+      #{parentId,jdbcType=BIGINT}, #{isMenu,jdbcType=INTEGER}, #{isEmploy,jdbcType=INTEGER}, 
+      #{createdTime,jdbcType=TIMESTAMP}, #{updatedTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="cun.yun.card.admin.dal.model.Menu">
+    insert into menu
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="url != null">
+        url,
+      </if>
+      <if test="parentId != null">
+        parent_id,
+      </if>
+      <if test="isMenu != null">
+        is_menu,
+      </if>
+      <if test="isEmploy != null">
+        is_employ,
+      </if>
+      <if test="createdTime != null">
+        created_time,
+      </if>
+      <if test="updatedTime != null">
+        updated_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="url != null">
+        #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="parentId != null">
+        #{parentId,jdbcType=BIGINT},
+      </if>
+      <if test="isMenu != null">
+        #{isMenu,jdbcType=INTEGER},
+      </if>
+      <if test="isEmploy != null">
+        #{isEmploy,jdbcType=INTEGER},
+      </if>
+      <if test="createdTime != null">
+        #{createdTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedTime != null">
+        #{updatedTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cun.yun.card.admin.dal.model.Menu">
+    update menu
+    <set>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="url != null">
+        url = #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="parentId != null">
+        parent_id = #{parentId,jdbcType=BIGINT},
+      </if>
+      <if test="isMenu != null">
+        is_menu = #{isMenu,jdbcType=INTEGER},
+      </if>
+      <if test="isEmploy != null">
+        is_employ = #{isEmploy,jdbcType=INTEGER},
+      </if>
+      <if test="createdTime != null">
+        created_time = #{createdTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedTime != null">
+        updated_time = #{updatedTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cun.yun.card.admin.dal.model.Menu">
+    update menu
+    set name = #{name,jdbcType=VARCHAR},
+      url = #{url,jdbcType=VARCHAR},
+      parent_id = #{parentId,jdbcType=BIGINT},
+      is_menu = #{isMenu,jdbcType=INTEGER},
+      is_employ = #{isEmploy,jdbcType=INTEGER},
+      created_time = #{createdTime,jdbcType=TIMESTAMP},
+      updated_time = #{updatedTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+  <select id="queryByAdminIdAndParentId" resultType="cun.yun.card.admin.dal.dto.MenuDto">
+      SELECT
+          m.id,
+          m.`name`,
+          m.url,
+          m.parent_id parentId,
+          m.is_menu isMenu
+      FROM
+          menu m
+      JOIN role_menu rm ON rm.menu_id = m.id
+      LEFT JOIN role r ON r.id = rm.role_id
+      AND m.is_employ = 0
+      LEFT JOIN role_admin ra ON ra.role_id = r.id
+      AND r.is_employ=0
+      LEFT JOIN admin a ON a.id = ra.admin_id
+      WHERE a.id=#{adminId}
+      AND a.is_employ=0
+      AND m.is_menu=1
+  </select>
+
+  <select id="queryByAdminId" resultType="cun.yun.card.admin.dal.dto.MenuDto">
+     SELECT
+          m.id,
+          m.`name`,
+          m.url,
+          m.parent_id parentId,
+          m.is_menu isMenu
+      FROM
+          menu m
+      JOIN role_menu rm ON rm.menu_id = m.id
+      LEFT JOIN role r ON r.id = rm.role_id
+      AND m.is_employ = 0
+      LEFT JOIN role_admin ra ON ra.role_id = r.id
+      AND r.is_employ=0
+      LEFT JOIN admin a ON a.id = ra.admin_id
+      WHERE a.id=#{adminId}
+      AND a.is_employ=0
+  </select>
+</mapper>

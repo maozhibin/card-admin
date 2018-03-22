@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cun.yun.card.admin.dal.dao.CooperatePartnerStatisticsDayMapper">
+  <resultMap id="BaseResultMap" type="cun.yun.card.admin.dal.model.CooperatePartnerStatisticsDay">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="applay_user_num" jdbcType="INTEGER" property="applayUserNum" />
+    <result column="applay_user_success" jdbcType="INTEGER" property="applayUserSuccess" />
+    <result column="applay_user_defeate" jdbcType="INTEGER" property="applayUserDefeate" />
+    <result column="type" jdbcType="INTEGER" property="type" />
+    <result column="sales_volume" jdbcType="DECIMAL" property="salesVolume" />
+    <result column="is_employ" jdbcType="INTEGER" property="isEmploy" />
+    <result column="updated_time" jdbcType="TIMESTAMP" property="updatedTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, applay_user_num, applay_user_success, applay_user_defeate, type, sales_volume, 
+    is_employ, updated_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from cooperate_partner_statistics_day
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <insert id="insert" parameterType="cun.yun.card.admin.dal.model.CooperatePartnerStatisticsDay">
+    insert into cooperate_partner_statistics_day (id, applay_user_num, applay_user_success, 
+      applay_user_defeate, type, sales_volume, 
+      is_employ, updated_time)
+    values (#{id,jdbcType=BIGINT}, #{applayUserNum,jdbcType=INTEGER}, #{applayUserSuccess,jdbcType=INTEGER}, 
+      #{applayUserDefeate,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, #{salesVolume,jdbcType=DECIMAL}, 
+      #{isEmploy,jdbcType=INTEGER}, #{updatedTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="cun.yun.card.admin.dal.model.CooperatePartnerStatisticsDay">
+    insert into cooperate_partner_statistics_day
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="applayUserNum != null">
+        applay_user_num,
+      </if>
+      <if test="applayUserSuccess != null">
+        applay_user_success,
+      </if>
+      <if test="applayUserDefeate != null">
+        applay_user_defeate,
+      </if>
+      <if test="type != null">
+        type,
+      </if>
+      <if test="salesVolume != null">
+        sales_volume,
+      </if>
+      <if test="isEmploy != null">
+        is_employ,
+      </if>
+      <if test="updatedTime != null">
+        updated_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="applayUserNum != null">
+        #{applayUserNum,jdbcType=INTEGER},
+      </if>
+      <if test="applayUserSuccess != null">
+        #{applayUserSuccess,jdbcType=INTEGER},
+      </if>
+      <if test="applayUserDefeate != null">
+        #{applayUserDefeate,jdbcType=INTEGER},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="salesVolume != null">
+        #{salesVolume,jdbcType=DECIMAL},
+      </if>
+      <if test="isEmploy != null">
+        #{isEmploy,jdbcType=INTEGER},
+      </if>
+      <if test="updatedTime != null">
+        #{updatedTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cun.yun.card.admin.dal.model.CooperatePartnerStatisticsDay">
+    update cooperate_partner_statistics_day
+    <set>
+      <if test="applayUserNum != null">
+        applay_user_num = #{applayUserNum,jdbcType=INTEGER},
+      </if>
+      <if test="applayUserSuccess != null">
+        applay_user_success = #{applayUserSuccess,jdbcType=INTEGER},
+      </if>
+      <if test="applayUserDefeate != null">
+        applay_user_defeate = #{applayUserDefeate,jdbcType=INTEGER},
+      </if>
+      <if test="type != null">
+        type = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="salesVolume != null">
+        sales_volume = #{salesVolume,jdbcType=DECIMAL},
+      </if>
+      <if test="isEmploy != null">
+        is_employ = #{isEmploy,jdbcType=INTEGER},
+      </if>
+      <if test="updatedTime != null">
+        updated_time = #{updatedTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cun.yun.card.admin.dal.model.CooperatePartnerStatisticsDay">
+    update cooperate_partner_statistics_day
+    set applay_user_num = #{applayUserNum,jdbcType=INTEGER},
+      applay_user_success = #{applayUserSuccess,jdbcType=INTEGER},
+      applay_user_defeate = #{applayUserDefeate,jdbcType=INTEGER},
+      type = #{type,jdbcType=INTEGER},
+      sales_volume = #{salesVolume,jdbcType=DECIMAL},
+      is_employ = #{isEmploy,jdbcType=INTEGER},
+      updated_time = #{updatedTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>
