@@ -1,17 +1,17 @@
 package cun.yun.card.admin.dal.model;
 
 public class RoleMenu {
-    private Integer id;
+    private Long id;
 
     private Long roleId;
 
     private Long menuId;
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

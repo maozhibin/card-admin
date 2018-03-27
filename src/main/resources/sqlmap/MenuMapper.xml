@@ -160,4 +160,17 @@
       WHERE a.id=#{adminId}
       AND a.is_employ=0
   </select>
+
+    <select id="queryAllInfo" resultType="cun.yun.card.admin.dal.dto.MenuDto">
+         SELECT
+          m.id,
+          m.`name`,
+          m.url,
+          m.parent_id parentId,
+          m.is_menu isMenu
+      FROM
+          menu m
+        WHERE  m.is_employ = 0
+    </select>
+
 </mapper>

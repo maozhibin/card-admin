@@ -1,6 +1,9 @@
 package cun.yun.card.admin.dal.dao;
 
 import cun.yun.card.admin.dal.model.RoleMenu;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface RoleMenuMapper {
     int insert(RoleMenu record);
@@ -12,4 +15,8 @@ public interface RoleMenuMapper {
     int updateByPrimaryKeySelective(RoleMenu record);
 
     int updateByPrimaryKey(RoleMenu record);
+
+    void insertList(@Param("roleMenus") List<RoleMenu> roleMenus);
+
+    void deleteByRoleId(Long id);
 }

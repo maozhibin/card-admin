@@ -19,6 +19,10 @@ public class AddInterceptor extends WebMvcConfigurerAdapter {
     public void addInterceptors(InterceptorRegistry registry) {
         InterceptorRegistration interceptorRegistry = registry.addInterceptor(getTokenInterceptor());
         interceptorRegistry.excludePathPatterns("/admin/login");
+        interceptorRegistry.excludePathPatterns("/admin/logout");
+        interceptorRegistry.excludePathPatterns("/sms/service/check");
+        interceptorRegistry.addPathPatterns("/*/**");
+//        registry.addInterceptor(new AuthInterceptor()).addPathPatterns("/*/**").excludePathPatterns("/admin/login","/admin/logout","/sms/service/check");
         super.addInterceptors(registry);
     }
 }

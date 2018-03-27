@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cun.yun.card.admin.dal.dao.RoleMapper">
   <resultMap id="BaseResultMap" type="cun.yun.card.admin.dal.model.Role">
-    <id column="id" jdbcType="INTEGER" property="id" />
+    <id column="id" jdbcType="BIGINT" property="id" />
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="is_employ" jdbcType="INTEGER" property="isEmploy" />
     <result column="updated_time" jdbcType="TIMESTAMP" property="updatedTime" />
@@ -14,12 +14,12 @@
     select 
     <include refid="Base_Column_List" />
     from role
-    where id = #{id,jdbcType=INTEGER}
+    where id = #{id,jdbcType=BIGINT}
   </select>
   <insert id="insert" parameterType="cun.yun.card.admin.dal.model.Role">
     insert into role (id, name, is_employ, 
       updated_time)
-    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{isEmploy,jdbcType=INTEGER}, 
+    values (#{id,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{isEmploy,jdbcType=INTEGER},
       #{updatedTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="cun.yun.card.admin.dal.model.Role">
@@ -40,7 +40,7 @@
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
-        #{id,jdbcType=INTEGER},
+        #{id,jdbcType=BIGINT},
       </if>
       <if test="name != null">
         #{name,jdbcType=VARCHAR},
@@ -66,13 +66,63 @@
         updated_time = #{updatedTime,jdbcType=TIMESTAMP},
       </if>
     </set>
-    where id = #{id,jdbcType=INTEGER}
+    where id = #{id,jdbcType=BIGINT}
   </update>
   <update id="updateByPrimaryKey" parameterType="cun.yun.card.admin.dal.model.Role">
     update role
     set name = #{name,jdbcType=VARCHAR},
       is_employ = #{isEmploy,jdbcType=INTEGER},
       updated_time = #{updatedTime,jdbcType=TIMESTAMP}
-    where id = #{id,jdbcType=INTEGER}
+    where id = #{id,jdbcType=BIGINT}
   </update>
+
+ <select id="totalCount" resultType="int">
+   SELECT
+   COUNT(1) count
+   FROM
+   role
+   WHERE is_employ=0
+   <if test="name != null and name !=''">
+     name = #{name,jdbcType=VARCHAR}
+   </if>
+ </select>
+
+
+  <select id="roleList" resultMap="BaseResultMap">
+    SELECT
+      *
+    FROM
+    role
+    WHERE is_employ=0
+    <if test="name != null and name !=''">
+      name = #{name,jdbcType=VARCHAR}
+    </if>
+    LIMIT #{begin},#{end}
+  </select>
+
+  <select id="queryMenuByRoleId" resultType="cun.yun.card.admin.dal.dto.MenuDto">
+    SELECT
+        m.id,
+        m.`name`,
+        m.url,
+        m.parent_id parentId,
+        m.is_menu isMenu
+    FROM
+        role r
+    LEFT JOIN role_menu rm ON r.id = rm.role_id
+    AND r.is_employ = 0
+    LEFT JOIN menu m ON m.id = rm.menu_id
+    AND m.is_employ = 0
+    WHERE
+        r.id = #{id}
+  </select>
+
+  <select id="queryByRoleName" resultMap="BaseResultMap">
+     SELECT
+       *
+    FROM
+        role
+    WHERE name = #{name}
+    AND is_employ=0
+  </select>
 </mapper>

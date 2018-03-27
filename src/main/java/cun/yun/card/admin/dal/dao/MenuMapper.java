@@ -20,4 +20,6 @@ public interface MenuMapper {
     List<MenuDto> queryByAdminIdAndParentId(@Param("adminId") Integer adminId);
 
     List<MenuDto> queryByAdminId(@Param("adminId") Integer adminId);
+
+    List<MenuDto> queryAllInfo();
 }

@@ -3,7 +3,7 @@ package cun.yun.card.admin.dal.model;
 import java.util.Date;
 
 public class Role {
-    private Integer id;
+    private Long id;
 
     private String name;
 
@@ -11,11 +11,33 @@ public class Role {
 
     private Date updatedTime;
 
-    public Integer getId() {
+    private Date createTime;
+
+    @Override
+    public String toString() {
+        return "Role{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", isEmploy=" + isEmploy +
+                ", updatedTime=" + updatedTime +
+                ", createTime=" + createTime +
+                '}';
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    public Date getCreateTime() {
+
+        return createTime;
+    }
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -43,17 +65,4 @@ public class Role {
         this.updatedTime = updatedTime;
     }
 
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(getClass().getSimpleName());
-        sb.append(" [");
-        sb.append("Hash = ").append(hashCode());
-        sb.append(", id=").append(id);
-        sb.append(", name=").append(name);
-        sb.append(", isEmploy=").append(isEmploy);
-        sb.append(", updatedTime=").append(updatedTime);
-        sb.append("]");
-        return sb.toString();
-    }
 }
