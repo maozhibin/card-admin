@@ -25,5 +25,7 @@ public interface RoleMapper {
 
     Role queryByRoleName(@Param("name") String name);
 
+    void deleteById(Long roleId);
 
+    List<Role> queryALL();
 }

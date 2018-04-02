@@ -1,5 +1,6 @@
 package cun.yun.card.admin.dal.dao;
 
+import cun.yun.card.admin.dal.model.RoleAdmin;
 import cun.yun.card.admin.dal.model.RoleMenu;
 import org.apache.ibatis.annotations.Param;
 
@@ -19,4 +20,8 @@ public interface RoleMenuMapper {
     void insertList(@Param("roleMenus") List<RoleMenu> roleMenus);
 
     void deleteByRoleId(Long id);
+
+    void deleteByMenuId(Long id);
+
+    RoleAdmin queryByRoleId(Long id);
 }

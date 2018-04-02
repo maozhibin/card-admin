@@ -70,7 +70,7 @@
     INSERT INTO role_menu(role_id,menu_id)
     VALUES
     <foreach collection="roleMenus" item="roleMenu" separator=",">
-      (#{emp.roleId},#{emp.menuId}
+      (#{roleMenu.roleId},#{roleMenu.menuId})
     </foreach>
   </insert>
 
@@ -80,4 +80,13 @@
         role_menu
     WHERE role_id = #{id}
   </delete>
+
+  <delete id="deleteByMenuId">
+     DELETE
+      FROM
+        role_menu
+    WHERE menu_id = #{id}
+  </delete>
+
+
 </mapper>

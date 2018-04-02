@@ -64,4 +64,14 @@
       admin_id = #{adminId,jdbcType=BIGINT}
     where id = #{id,jdbcType=BIGINT}
   </update>
+
+  <select id="queryByRoleId" resultMap="BaseResultMap">
+    SELECT
+    *
+    FROM
+    role_admin
+    WHERE
+    role_id = #{roleId}
+    LIMIT 1
+  </select>
 </mapper>

@@ -19,4 +19,8 @@ public interface RoleService {
     Role queryById(Long id);
 
     void update(Role role);
+
+    void deleteById(String roleId);
+
+    List<Role> queryALL();
 }

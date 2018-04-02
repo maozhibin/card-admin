@@ -4,6 +4,7 @@ import cun.yun.card.admin.common.CommonConstant;
 import cun.yun.card.admin.dal.dto.MenuDto;
 import cun.yun.card.admin.dal.model.Menu;
 import cun.yun.card.admin.dal.service.MenuService;
+import cun.yun.card.admin.dal.service.RoleMenuService;
 import cun.yun.card.admin.util.JsonResponseMsg;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
@@ -18,7 +19,8 @@ public class MenuController {
 
     @Resource
     private MenuService menuService;
-
+    @Resource
+    private RoleMenuService roleMenuService;
     /**
      * 菜单列表
      * @return
@@ -90,15 +92,15 @@ public class MenuController {
         if(StringUtils.isEmpty(menu.getName())){
             return result.fill(JsonResponseMsg.CODE_FAIL,"请传入菜单名");
         }
-        if(StringUtils.isEmpty(menu.getUrl())){
-            return result.fill(JsonResponseMsg.CODE_FAIL,"请输入地址");
-        }
+//        if(StringUtils.isEmpty(menu.getUrl())){
+//            return result.fill(JsonResponseMsg.CODE_FAIL,"请输入地址");
+//        }
         if(menu.getParentId()==null){//若果父及菜单为null则设置为0本身就是父及菜单
             menu.setParentId(0L);
         }
-        if(menu.getIsMenu()==null){
-            return result.fill(JsonResponseMsg.CODE_FAIL,"请选择菜单属性");
-        }
+//        if(menu.getIsMenu()==null){
+//            return result.fill(JsonResponseMsg.CODE_FAIL,"请选择菜单属性");
+//        }
         menu.setIsEmploy(CommonConstant.IS_EMPLOY);
         Date date = new Date();
         menu.setUpdatedTime(date);
@@ -109,7 +111,7 @@ public class MenuController {
     /**
      * 删除菜单
      */
-    @RequestMapping(value = "deleteMenu",method = RequestMethod.POST)
+    @RequestMapping(value = "deleteMenu",method = RequestMethod.GET)
     @ResponseBody
     public JsonResponseMsg deleteMenu(String id){
         JsonResponseMsg result = new JsonResponseMsg();
@@ -117,6 +119,7 @@ public class MenuController {
             return result.fill(JsonResponseMsg.CODE_FAIL,"请传入菜单Id");
         }
         menuService.deleteMenu(id);
+        roleMenuService.deleteByMenuId(NumberUtils.toLong(id));
         return result.fill(JsonResponseMsg.CODE_SUCCESS,"删除成功");
     }
 

@@ -5,6 +5,7 @@
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="is_employ" jdbcType="INTEGER" property="isEmploy" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="updated_time" jdbcType="TIMESTAMP" property="updatedTime" />
   </resultMap>
   <sql id="Base_Column_List">
@@ -33,6 +34,9 @@
       </if>
       <if test="isEmploy != null">
         is_employ,
+      </if>
+      <if test="createTime != null">
+        create_time,
       </if>
       <if test="updatedTime != null">
         updated_time,
@@ -95,7 +99,7 @@
     role
     WHERE is_employ=0
     <if test="name != null and name !=''">
-      name = #{name,jdbcType=VARCHAR}
+      AND name = #{name,jdbcType=VARCHAR}
     </if>
     LIMIT #{begin},#{end}
   </select>
@@ -124,5 +128,22 @@
         role
     WHERE name = #{name}
     AND is_employ=0
+  </select>
+
+
+  <delete id="deleteById">
+    DELETE
+      FROM
+    role
+    WHERE id = #{id}
+  </delete>
+
+
+  <select id="queryALL" resultMap="BaseResultMap">
+    SELECT
+       *
+    FROM
+        role
+    WHERE  is_employ=0
   </select>
 </mapper>

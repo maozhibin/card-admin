@@ -12,6 +12,7 @@ import java.util.List;
 public class RoleMenuServiceImpl implements RoleMenuService {
     @Resource
     private RoleMenuMapper roleMenuMapper;
+
     @Override
     public void insertList(List<RoleMenu> roleMenus) {
         roleMenuMapper.insertList(roleMenus);
@@ -20,5 +21,10 @@ public class RoleMenuServiceImpl implements RoleMenuService {
     @Override
     public void deleteByRoleId(Long id) {
         roleMenuMapper.deleteByRoleId(id);
+    }
+
+    @Override
+    public void deleteByMenuId(Long id) {
+        roleMenuMapper.deleteByMenuId(id);
     }
 }

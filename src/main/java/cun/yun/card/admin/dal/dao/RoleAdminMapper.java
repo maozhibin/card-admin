@@ -12,4 +12,6 @@ public interface RoleAdminMapper {
     int updateByPrimaryKeySelective(RoleAdmin record);
 
     int updateByPrimaryKey(RoleAdmin record);
+
+    RoleAdmin queryByRoleId(Long roleId);
 }

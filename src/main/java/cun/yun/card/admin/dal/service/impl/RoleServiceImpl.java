@@ -1,11 +1,13 @@
 package cun.yun.card.admin.dal.service.impl;
 
+import cun.yun.card.admin.common.CommonConstant;
 import cun.yun.card.admin.dal.dao.RoleMapper;
 import cun.yun.card.admin.dal.dto.MenuDto;
 import cun.yun.card.admin.dal.dto.RoleDto;
 import cun.yun.card.admin.dal.ext.Page;
 import cun.yun.card.admin.dal.model.Role;
 import cun.yun.card.admin.dal.service.RoleService;
+import org.apache.commons.lang.math.NumberUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -46,5 +48,18 @@ import java.util.List;
     @Override
     public void update(Role role) {
          roleMapper.updateByPrimaryKeySelective(role);
+    }
+
+    @Override
+    public void deleteById(String roleId) {
+        Role role = new Role();
+        role.setIsEmploy(CommonConstant.NO_EMPLOY);
+        role.setId(NumberUtils.toLong(roleId));
+        roleMapper.updateByPrimaryKeySelective(role);
+    }
+
+    @Override
+    public List<Role> queryALL() {
+        return roleMapper.queryALL();
     }
 }

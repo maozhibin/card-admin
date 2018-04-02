@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="cun.yun.card.admin.dal.dao.BankMapper">
-  <resultMap id="BaseResultMap" type="cun.yun.card.admin.dal.model.Bank">
+<mapper namespace="cun.yun.card.admin.dal.dao.BondMapper">
+  <resultMap id="BaseResultMap" type="cun.yun.card.admin.dal.model.Bond">
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="iamge" jdbcType="VARCHAR" property="iamge" />
@@ -10,7 +10,7 @@
     <result column="is_employ" jdbcType="INTEGER" property="isEmploy" />
     <result column="updated_time" jdbcType="TIMESTAMP" property="updatedTime" />
   </resultMap>
-  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="cun.yun.card.admin.dal.model.Bank">
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="cun.yun.card.admin.dal.model.Bond">
     <result column="introduce" jdbcType="LONGVARCHAR" property="introduce" />
   </resultMap>
   <sql id="Base_Column_List">
@@ -24,19 +24,19 @@
     <include refid="Base_Column_List" />
     ,
     <include refid="Blob_Column_List" />
-    from bank
+    from bond
     where id = #{id,jdbcType=BIGINT}
   </select>
-  <insert id="insert" parameterType="cun.yun.card.admin.dal.model.Bank">
-    insert into bank (id, name, iamge, 
+  <insert id="insert" parameterType="cun.yun.card.admin.dal.model.Bond">
+    insert into bond (id, name, iamge, 
       price, sort, is_employ, 
       updated_time, introduce)
     values (#{id,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{iamge,jdbcType=VARCHAR}, 
       #{price,jdbcType=DECIMAL}, #{sort,jdbcType=INTEGER}, #{isEmploy,jdbcType=INTEGER}, 
       #{updatedTime,jdbcType=TIMESTAMP}, #{introduce,jdbcType=LONGVARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="cun.yun.card.admin.dal.model.Bank">
-    insert into bank
+  <insert id="insertSelective" parameterType="cun.yun.card.admin.dal.model.Bond">
+    insert into bond
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
         id,
@@ -90,8 +90,8 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="cun.yun.card.admin.dal.model.Bank">
-    update bank
+  <update id="updateByPrimaryKeySelective" parameterType="cun.yun.card.admin.dal.model.Bond">
+    update bond
     <set>
       <if test="name != null">
         name = #{name,jdbcType=VARCHAR},
@@ -117,8 +117,8 @@
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKeyWithBLOBs" parameterType="cun.yun.card.admin.dal.model.Bank">
-    update bank
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="cun.yun.card.admin.dal.model.Bond">
+    update bond
     set name = #{name,jdbcType=VARCHAR},
       iamge = #{iamge,jdbcType=VARCHAR},
       price = #{price,jdbcType=DECIMAL},
@@ -128,8 +128,8 @@
       introduce = #{introduce,jdbcType=LONGVARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="cun.yun.card.admin.dal.model.Bank">
-    update bank
+  <update id="updateByPrimaryKey" parameterType="cun.yun.card.admin.dal.model.Bond">
+    update bond
     set name = #{name,jdbcType=VARCHAR},
       iamge = #{iamge,jdbcType=VARCHAR},
       price = #{price,jdbcType=DECIMAL},
@@ -138,47 +138,4 @@
       updated_time = #{updatedTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=BIGINT}
   </update>
-
-
-  <select id="bankList" resultType="cun.yun.card.admin.dal.dto.BankDto">
-    SELECT
-    a.id,
-    a.`name` bankName,
-    a.iamge,
-    a.introduce,
-    (
-    SELECT
-    COUNT(1)
-    FROM
-    bank b
-    LEFT JOIN bank_link l ON b.id = l.bank_id
-    AND b.is_employ = 0
-    AND l.is_employ = 0
-    WHERE
-    b.id = a.id
-    GROUP BY
-    b.`name`
-    ) count,
-    a.sort,
-    a.price
-    FROM
-    bank a
-    WHERE  a.is_employ=0
-    <if test="name != null and name !=''">
-      AND a.name = #{name,jdbcType=VARCHAR}
-    </if>
-    ORDER BY a.sort
-    LIMIT #{begin},#{end}
-  </select>
-
-  <select id="totalCount" resultType="int">
-    SELECT
-    COUNT(1) count
-    FROM
-    bank
-    WHERE is_employ=0
-    <if test="name != null and name !=''">
-      AND name = #{name,jdbcType=VARCHAR}
-    </if>
-  </select>
 </mapper>

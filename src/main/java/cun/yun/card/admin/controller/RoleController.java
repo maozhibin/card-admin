@@ -1,14 +1,13 @@
 package cun.yun.card.admin.controller;
 
-import cun.yun.card.admin.common.CommonConstant;
-import cun.yun.card.admin.dal.dao.RoleMenuMapper;
 import cun.yun.card.admin.dal.dto.MenuDto;
 import cun.yun.card.admin.dal.dto.RoleDto;
 import cun.yun.card.admin.dal.ext.Page;
-import cun.yun.card.admin.dal.model.Menu;
 import cun.yun.card.admin.dal.model.Role;
+import cun.yun.card.admin.dal.model.RoleAdmin;
 import cun.yun.card.admin.dal.model.RoleMenu;
 import cun.yun.card.admin.dal.service.MenuService;
+import cun.yun.card.admin.dal.service.RoleAdminService;
 import cun.yun.card.admin.dal.service.RoleMenuService;
 import cun.yun.card.admin.dal.service.RoleService;
 import cun.yun.card.admin.util.JsonResponseMsg;
@@ -30,6 +29,9 @@ public class RoleController {
     private MenuService menuService;
     @Resource
     private RoleMenuService roleMenuService;
+    @Resource
+    private RoleAdminService roleAdminService;
+
     /**
      * 角色列表
      */
@@ -44,6 +46,21 @@ public class RoleController {
         map.put("page",page);
         return result.fill(JsonResponseMsg.CODE_SUCCESS,"查出成功",map);
     }
+
+
+    /**
+     * 所有角色
+     */
+    @RequestMapping(value = "roleAll",method = RequestMethod.GET)
+    @ResponseBody
+    public JsonResponseMsg roleAll(){
+        JsonResponseMsg result = new JsonResponseMsg();
+        Map<String,Object> map = new HashMap<>();
+        List<Role> list = roleService.queryALL();
+        map.put("list",list);
+        return result.fill(JsonResponseMsg.CODE_SUCCESS,"查出成功",map);
+    }
+
 
     /**
      * 角色权限查询
@@ -134,7 +151,7 @@ public class RoleController {
         if(!roleByID.getName().equals(roleDto.getName())){//如果角色名和原来相同就不判断角色名是否存在
             Role rolenName = roleService.queryByRoleName(roleDto.getName());
             if(rolenName!=null){
-                return result.fill(JsonResponseMsg.CODE_FAIL,"你输入的角色名称已经存在了，请重新输入名称");
+                return result.fill(JsonResponseMsg.CODE_FAIL,"你  输入的角色名称已经存在了，请重新输入名称");
             }
         }
         //修改角色
@@ -157,6 +174,29 @@ public class RoleController {
         roleMenuService.insertList(roleMenus);
         return result.fill(JsonResponseMsg.CODE_SUCCESS,"");
     }
+
+    /**
+     * 角色删除
+     */
+
+    @RequestMapping(value = "deleteRole",method = RequestMethod.GET)
+    @ResponseBody
+    public JsonResponseMsg deleteRole(String roleId){
+        JsonResponseMsg result = new JsonResponseMsg();
+        if(!NumberUtils.isNumber(roleId)){
+            return result.fill(JsonResponseMsg.CODE_FAIL,"请传入角色id");
+        }
+        RoleAdmin roleAdmin = roleAdminService.queryByRoleId(NumberUtils.toLong(roleId));
+        if(roleAdmin!=null){
+            return result.fill(JsonResponseMsg.CODE_FAIL,"还有用户使用该角色暂时不能进行删除");
+        }
+        roleService.deleteById(roleId);
+        return result.fill(JsonResponseMsg.CODE_SUCCESS,"删除角色成功");
+    }
+
+
+
+
 
 
 }

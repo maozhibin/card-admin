@@ -17,7 +17,7 @@
     id, name, mailbox, mobile, role_id, password, is_employ, created_time, updated_time, 
     last_login_time
   </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from admin
@@ -154,6 +154,50 @@
     WHERE
         `name`=#{userName}
     AND `password`=#{password}
+    AND is_employ=0
+  </select>
+
+
+  <select id="totalCount" resultType="int">
+      SELECT
+      COUNT(1) count
+      FROM
+          admin a
+      LEFT JOIN role r ON a.role_id = r.id
+      AND a.is_employ = 0
+      WHERE r.is_employ = 0
+    <if test="name != null and name !=''">
+      AND a.name = #{name,jdbcType=VARCHAR}
+    </if>
+  </select>
+
+  <select id="adminList" resultType="cun.yun.card.admin.dal.dto.AdminDto">
+    SELECT
+        a.id,
+        a.`name` userName,
+        a.mailbox,
+        a.mobile,
+        a.last_login_time lastLoginTime,
+        a.role_id roleId,
+        r.`name` roleName
+    FROM
+        admin a
+    LEFT JOIN role r ON a.role_id = r.id
+    AND a.is_employ = 0
+    WHERE r.is_employ = 0
+    <if test="name != null and name !=''">
+      AND a.name = #{name,jdbcType=VARCHAR}
+    </if>
+    LIMIT #{begin},#{end}
+  </select>
+
+  <select id="queryByUserName" resultMap="BaseResultMap">
+      SELECT
+        *
+    FROM
+        admin
+    WHERE
+        `name`=#{userName}
     AND is_employ=0
   </select>
 </mapper>

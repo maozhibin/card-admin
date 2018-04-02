@@ -8,4 +8,6 @@ public interface RoleMenuService {
     void insertList(List<RoleMenu> roleMenus);
 
     void deleteByRoleId(Long id);
+
+    void deleteByMenuId(Long id);
 }
