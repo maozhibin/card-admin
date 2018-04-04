@@ -20,4 +20,6 @@ public interface MenuService {
     void updateMenu(Menu menu);
 
     void deleteMenu(String id);
+
+    List<MenuDto> queryByParentId(Long parentId);
 }

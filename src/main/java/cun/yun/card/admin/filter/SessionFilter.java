@@ -44,8 +44,9 @@ public class SessionFilter  implements Filter {
             String login = "/admin/login";
             String logout = "/admin/logout";
             String check = "/sms/service/check";
+            String fileUp = "/file/fileUp";
             RequestWrapper wrapper = new RequestWrapper(req);
-            if(!login.equals(path)&&!logout.equals(path)&&!check.equals(path)){
+            if(!login.equals(path)&&!logout.equals(path)&&!check.equals(path)&&!fileUp.equals(path)){
                 if("GET".equals(method)){
                     adminId =request.getParameter("adminId");
                     if(!NumberUtils.isNumber(adminId)){
@@ -56,6 +57,9 @@ public class SessionFilter  implements Filter {
                         String body =  wrapper.getBody();
 
                         JSONObject json = JSONObject.parseObject(body);
+                        if(json==null){
+                            return;
+                        }
                         adminId=json.getString("adminId");
                         if(!NumberUtils.isNumber(adminId)){
                             return;

@@ -33,4 +33,9 @@ public class Util {
         return Pattern.matches(REGEX_EMAIL, email);
     }
 
+
+    public static void main(String[] args) {
+        System.out.println("【兴业银行】恭喜您成为兴业金卡信用卡优选用户。最快5秒批卡，最高5万额度，可取现点击 http://1wz.in/1GKg 退订回T".length());
+
+    }
 }

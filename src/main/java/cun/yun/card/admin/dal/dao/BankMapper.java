@@ -22,4 +22,8 @@ public interface BankMapper {
     int totalCount(@Param("name") String name);
 
     List<BankDto> bankList(@Param("begin") int offset, @Param("end")int limit, @Param("name") String name);
+
+    Bank queryByBankName(@Param("name")String name);
+
+    Integer queryMaxSort();
 }

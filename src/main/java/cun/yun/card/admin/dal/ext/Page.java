@@ -25,12 +25,14 @@ public class Page<T> {
 
     public Page(int limit, int offset) {
         if(offset > 1){
-            offset = (offset-1)*10;
+            this.limit = offset*limit+limit;
+            this.offset = offset*limit;
         }else if(offset==1){
-            offset = 0;
+            this.limit = limit;
+            offset=0;
         }
-        this.limit = limit;
-        this.offset = offset;
+        limit= this.limit;
+        offset=this.offset;
     }
 
     public List<T> getRows() {

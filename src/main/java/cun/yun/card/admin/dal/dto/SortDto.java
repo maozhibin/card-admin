@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Setter
 @Getter
-public class BankSortDto {
+public class SortDto {
 
     private Long topId;
 

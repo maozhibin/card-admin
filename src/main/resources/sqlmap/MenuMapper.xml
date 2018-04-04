@@ -173,4 +173,18 @@
         WHERE  m.is_employ = 0
     </select>
 
+    <select id="queryByParentId" resultType="cun.yun.card.admin.dal.dto.MenuDto">
+        SELECT
+        m.id,
+        m.`name`,
+        m.url,
+        m.parent_id parentId,
+        m.is_menu isMenu
+        FROM
+        menu m
+        WHERE  m.is_employ = 0
+        AND m.parent_id=#{parentId}
+    </select>
+
+
 </mapper>

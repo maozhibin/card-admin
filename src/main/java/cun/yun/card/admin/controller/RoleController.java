@@ -40,6 +40,7 @@ public class RoleController {
     public JsonResponseMsg roleList(@RequestParam(defaultValue = "10", required = false) Integer limit,
                                      @RequestParam(defaultValue = "1", required = false) Integer offset, String name){
         JsonResponseMsg result = new JsonResponseMsg();
+
         Page<Role> page = new Page<>(limit, offset);
         roleService.roleList(page,name);
         Map<String,Object> map = new HashMap<>();

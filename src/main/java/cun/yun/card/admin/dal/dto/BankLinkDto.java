@@ -1,15 +1,19 @@
-package cun.yun.card.admin.dal.model;
+package cun.yun.card.admin.dal.dto;
 
 import lombok.Getter;
 import lombok.Setter;
+
 import java.util.Date;
 
 @Setter
 @Getter
-public class BondLink {
+public class BankLinkDto {
+
     private Long id;
 
-    private Long bondId;
+    private Long bankId;
+
+    private String bankName;
 
     private String url;
 

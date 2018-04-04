@@ -1,6 +1,8 @@
 package cun.yun.card.admin.dal.dao;
 
 import cun.yun.card.admin.dal.model.CooperatePartnerStatisticsDay;
+import cun.yun.card.admin.dal.model.CooperativeLinkProduct;
+import org.apache.ibatis.annotations.Param;
 
 public interface CooperatePartnerStatisticsDayMapper {
     int insert(CooperatePartnerStatisticsDay record);
@@ -12,4 +14,6 @@ public interface CooperatePartnerStatisticsDayMapper {
     int updateByPrimaryKeySelective(CooperatePartnerStatisticsDay record);
 
     int updateByPrimaryKey(CooperatePartnerStatisticsDay record);
+
+    CooperativeLinkProduct queryByBankLinkId(@Param("bankId") Long bankId);
 }

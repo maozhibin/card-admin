@@ -122,4 +122,14 @@
       updated_time = #{updatedTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=BIGINT}
   </update>
+
+  <select id="queryByBankLinkId" resultMap="BaseResultMap">
+    SELECT
+        *
+    FROM
+        cooperative_link_product
+    WHERE is_employ=0
+    AND type=1
+    AND link_id =#{bankId}
+  </select>
 </mapper>

@@ -95,9 +95,9 @@ public class MenuController {
 //        if(StringUtils.isEmpty(menu.getUrl())){
 //            return result.fill(JsonResponseMsg.CODE_FAIL,"请输入地址");
 //        }
-        if(menu.getParentId()==null){//若果父及菜单为null则设置为0本身就是父及菜单
-            menu.setParentId(0L);
-        }
+//        if(menu.getParentId()==null){//若果父及菜单为null则设置为0本身就是父及菜单
+//            menu.setParentId(0L);
+//        }
 //        if(menu.getIsMenu()==null){
 //            return result.fill(JsonResponseMsg.CODE_FAIL,"请选择菜单属性");
 //        }
@@ -122,5 +122,25 @@ public class MenuController {
         roleMenuService.deleteByMenuId(NumberUtils.toLong(id));
         return result.fill(JsonResponseMsg.CODE_SUCCESS,"删除成功");
     }
+
+
+    /**
+     * 根据parentId查询子菜单
+     */
+
+    @RequestMapping(value = "queryByParentId",method = RequestMethod.GET)
+    @ResponseBody
+    public JsonResponseMsg queryByParentId(String parentId){
+        JsonResponseMsg result = new JsonResponseMsg();
+        if(!NumberUtils.isNumber(parentId)){
+            return result.fill(JsonResponseMsg.CODE_FAIL,"请传入parentId");
+        }
+        List<MenuDto> menuList = menuService.queryByParentId(NumberUtils.toLong(parentId));
+
+        Map<String,Object> map = new HashMap<>();
+        map.put("menuList",menuList);
+        return result.fill(JsonResponseMsg.CODE_SUCCESS,"查询成功",map);
+    }
+
 
 }

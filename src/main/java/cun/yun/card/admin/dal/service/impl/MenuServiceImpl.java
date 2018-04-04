@@ -52,6 +52,11 @@ public class MenuServiceImpl implements MenuService {
         menuMapper.updateByPrimaryKeySelective(menu);
     }
 
+    @Override
+    public List<MenuDto> queryByParentId(Long parentId) {
+        return menuMapper.queryByParentId(parentId);
+    }
+
 
     /**
      * 递归查找子菜单

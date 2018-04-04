@@ -3,13 +3,15 @@
 <mapper namespace="cun.yun.card.admin.dal.dao.BondLinkMapper">
   <resultMap id="BaseResultMap" type="cun.yun.card.admin.dal.model.BondLink">
     <id column="id" jdbcType="BIGINT" property="id" />
-    <result column="bank_id" jdbcType="BIGINT" property="bankId" />
+    <result column="bond_id" jdbcType="BIGINT" property="bondId" />
     <result column="url" jdbcType="VARCHAR" property="url" />
     <result column="is_employ" jdbcType="INTEGER" property="isEmploy" />
     <result column="updated_time" jdbcType="TIMESTAMP" property="updatedTime" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+
   </resultMap>
   <sql id="Base_Column_List">
-    id, bank_id, url, is_employ, updated_time
+    id, bond_id, url, is_employ, updated_time
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -18,9 +20,9 @@
     where id = #{id,jdbcType=BIGINT}
   </select>
   <insert id="insert" parameterType="cun.yun.card.admin.dal.model.BondLink">
-    insert into bond_link (id, bank_id, url, 
+    insert into bond_link (id, bond_id, url,
       is_employ, updated_time)
-    values (#{id,jdbcType=BIGINT}, #{bankId,jdbcType=BIGINT}, #{url,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=BIGINT}, #{bondId,jdbcType=BIGINT}, #{url,jdbcType=VARCHAR},
       #{isEmploy,jdbcType=INTEGER}, #{updatedTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="cun.yun.card.admin.dal.model.BondLink">
@@ -29,8 +31,8 @@
       <if test="id != null">
         id,
       </if>
-      <if test="bankId != null">
-        bank_id,
+      <if test="bondId != null">
+        bond_id,
       </if>
       <if test="url != null">
         url,
@@ -46,8 +48,8 @@
       <if test="id != null">
         #{id,jdbcType=BIGINT},
       </if>
-      <if test="bankId != null">
-        #{bankId,jdbcType=BIGINT},
+      <if test="bondId != null">
+        #{bondId,jdbcType=BIGINT},
       </if>
       <if test="url != null">
         #{url,jdbcType=VARCHAR},
@@ -64,7 +66,7 @@
     update bond_link
     <set>
       <if test="bankId != null">
-        bank_id = #{bankId,jdbcType=BIGINT},
+        bond_id = #{bondId,jdbcType=BIGINT},
       </if>
       <if test="url != null">
         url = #{url,jdbcType=VARCHAR},
@@ -80,7 +82,7 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="cun.yun.card.admin.dal.model.BondLink">
     update bond_link
-    set bank_id = #{bankId,jdbcType=BIGINT},
+    set bond_id = #{bondId,jdbcType=BIGINT},
       url = #{url,jdbcType=VARCHAR},
       is_employ = #{isEmploy,jdbcType=INTEGER},
       updated_time = #{updatedTime,jdbcType=TIMESTAMP}

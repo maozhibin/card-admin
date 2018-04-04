@@ -18,6 +18,32 @@ public class Bank {
 
     private Date updatedTime;
 
+    @Override
+    public String toString() {
+        return "Bank{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", iamge='" + iamge + '\'' +
+                ", price=" + price +
+                ", sort=" + sort +
+                ", isEmploy=" + isEmploy +
+                ", updatedTime=" + updatedTime +
+                ", createTime=" + createTime +
+                ", introduce='" + introduce + '\'' +
+                '}';
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    public Date getCreateTime() {
+
+        return createTime;
+    }
+
+    private Date createTime;
+
     private String introduce;
 
     public Long getId() {
@@ -84,21 +110,4 @@ public class Bank {
         this.introduce = introduce;
     }
 
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(getClass().getSimpleName());
-        sb.append(" [");
-        sb.append("Hash = ").append(hashCode());
-        sb.append(", id=").append(id);
-        sb.append(", name=").append(name);
-        sb.append(", iamge=").append(iamge);
-        sb.append(", price=").append(price);
-        sb.append(", sort=").append(sort);
-        sb.append(", isEmploy=").append(isEmploy);
-        sb.append(", updatedTime=").append(updatedTime);
-        sb.append(", introduce=").append(introduce);
-        sb.append("]");
-        return sb.toString();
-    }
 }

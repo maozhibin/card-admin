@@ -9,12 +9,14 @@
     <result column="sort" jdbcType="INTEGER" property="sort" />
     <result column="is_employ" jdbcType="INTEGER" property="isEmploy" />
     <result column="updated_time" jdbcType="TIMESTAMP" property="updatedTime" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+
   </resultMap>
   <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="cun.yun.card.admin.dal.model.Bank">
     <result column="introduce" jdbcType="LONGVARCHAR" property="introduce" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, name, iamge, price, sort, is_employ, updated_time
+    id, name, iamge, price, sort, is_employ, updated_time,create_time
   </sql>
   <sql id="Blob_Column_List">
     introduce
@@ -59,6 +61,9 @@
       <if test="updatedTime != null">
         updated_time,
       </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
       <if test="introduce != null">
         introduce,
       </if>
@@ -85,6 +90,9 @@
       <if test="updatedTime != null">
         #{updatedTime,jdbcType=TIMESTAMP},
       </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
       <if test="introduce != null">
         #{introduce,jdbcType=LONGVARCHAR},
       </if>
@@ -110,6 +118,9 @@
       </if>
       <if test="updatedTime != null">
         updated_time = #{updatedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
       <if test="introduce != null">
         introduce = #{introduce,jdbcType=LONGVARCHAR},
@@ -180,5 +191,26 @@
     <if test="name != null and name !=''">
       AND name = #{name,jdbcType=VARCHAR}
     </if>
+  </select>
+
+
+  <select id="queryByBankName" resultMap="BaseResultMap">
+    SELECT
+    *
+    FROM
+    bank
+    WHERE is_employ=0
+    <if test="name != null and name !=''">
+      AND name = #{name,jdbcType=VARCHAR}
+    </if>
+
+  </select>
+
+  <select id="queryMaxSort" resultType="int">
+    SELECT
+        MAX(sort) sort
+    FROM
+        bank
+    WHERE is_employ=0
   </select>
 </mapper>

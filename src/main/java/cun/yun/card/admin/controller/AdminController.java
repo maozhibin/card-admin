@@ -1,7 +1,9 @@
 package cun.yun.card.admin.controller;
 
+import cun.yun.card.admin.common.CommonConstant;
 import cun.yun.card.admin.common.Util;
 import cun.yun.card.admin.dal.dto.AdminDto;
+import cun.yun.card.admin.dal.dto.AdminUnpdtePwdDto;
 import cun.yun.card.admin.dal.dto.MenuDto;
 import cun.yun.card.admin.dal.ext.Page;
 import cun.yun.card.admin.dal.model.Admin;
@@ -152,7 +154,7 @@ public class AdminController {
     /**
      * 管理员修改
      */
-    @RequestMapping(value = "updateAdmin",method = RequestMethod.POST,produces="application/json")
+    @RequestMapping(value = "updateAdmin",method = RequestMethod.POST)
     @ResponseBody
     public JsonResponseMsg updateAdmin(@RequestBody AdminDto adminDto) {
         JsonResponseMsg result = new JsonResponseMsg();
@@ -196,4 +198,70 @@ public class AdminController {
         adminService.update(admin);
         return result.fill(JsonResponseMsg.CODE_SUCCESS,"修改成");
     }
+
+
+    /**
+     * 管理员删除
+     */
+    @RequestMapping(value = "deleteAdmin",method = RequestMethod.GET)
+    @ResponseBody
+    public JsonResponseMsg deleteAdmin(String Id) {
+        JsonResponseMsg result = new JsonResponseMsg();
+        if(StringUtils.isEmpty(Id)){
+            return result.fill(JsonResponseMsg.CODE_FAIL,"请传入管理员Id");
+        }
+
+        Admin admin = adminService.queryById(NumberUtils.toLong(Id));
+
+        if(admin==null){
+            return result.fill(JsonResponseMsg.CODE_FAIL,"你删除的管理员不存在");
+        }
+        admin.setIsEmploy(CommonConstant.NO_EMPLOY);
+        adminService.update(admin);
+        return result.fill(JsonResponseMsg.CODE_SUCCESS,"删除成功");
+    }
+
+    /**
+     * 管理员密码修改
+     */
+    @RequestMapping(value = "updatePwd",method = RequestMethod.POST)
+    @ResponseBody
+    public JsonResponseMsg updatePwd(@RequestBody AdminUnpdtePwdDto adminUnpdtePwdDto) {
+        JsonResponseMsg result = new JsonResponseMsg();
+
+        if(adminUnpdtePwdDto.getId()==null){
+            return result.fill(JsonResponseMsg.CODE_FAIL,"你要操作的管理员不存在");
+        }
+
+        if(StringUtils.isEmpty(adminUnpdtePwdDto.getOldPwd())||StringUtils.isEmpty(adminUnpdtePwdDto.getNewPwd())){
+            return result.fill(JsonResponseMsg.CODE_FAIL,"请输入你的密码");
+        }
+
+        Admin admin = adminService.queryById(adminUnpdtePwdDto.getId());
+        if(admin==null){
+            return result.fill(JsonResponseMsg.CODE_FAIL,"你要操作的管理员不存在");
+        }
+        if(adminUnpdtePwdDto.getOldPwd().equals(admin.getPassword())){
+            return result.fill(JsonResponseMsg.CODE_FAIL,"你输入的原先密码不正确");
+        }
+        admin.setPassword(adminUnpdtePwdDto.getNewPwd());
+        adminService.insert(admin);
+
+
+//        if(StringUtils.isEmpty(adminId)){
+//            return result.fill(JsonResponseMsg.CODE_FAIL,"请传入管理员Id");
+//        }
+//
+//        Admin admin = adminService.queryById(NumberUtils.toLong(adminId));
+//
+//        if(admin==null){
+//            return result.fill(JsonResponseMsg.CODE_FAIL,"你删除的管理员不存在");
+//        }
+//        admin.setIsEmploy(CommonConstant.NO_EMPLOY);
+//        adminService.update(admin);
+        return result.fill(JsonResponseMsg.CODE_SUCCESS,"删除成功");
+    }
+
+
+
 }
