@@ -3,6 +3,7 @@ package cun.yun.card.admin.controller;
 import cun.yun.card.admin.common.CommonConstant;
 import cun.yun.card.admin.dal.dao.BankLinkMapper;
 import cun.yun.card.admin.dal.dao.CooperatePartnerStatisticsDayMapper;
+import cun.yun.card.admin.dal.dao.CooperativeLinkProductMapper;
 import cun.yun.card.admin.dal.dto.BankDto;
 import cun.yun.card.admin.dal.dto.BankLinkDto;
 
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @CrossOrigin
@@ -33,7 +35,7 @@ public class BankController {
     @Resource
     private BankLinkMapper bankLinkMapper;
     @Resource
-    private CooperatePartnerStatisticsDayMapper cooperatePartnerStatisticsDayMapper;
+    private CooperativeLinkProductMapper cooperativeLinkProductMapper;
 
 
     @RequestMapping(value = "bankList",method = RequestMethod.GET)
@@ -109,7 +111,6 @@ public class BankController {
         bankService.update(bank);
         return result.fill(JsonResponseMsg.CODE_SUCCESS,"修改银行号信息成功");
     }
-
     /**
      * 银行添加
      * @param bank
@@ -157,13 +158,17 @@ public class BankController {
         }
         Bank bank = bankService.queryByBankId(NumberUtils.toLong(bankId));
         if(bank==null){
-            return result.fill(JsonResponseMsg.CODE_FAIL,"你删除的角色不存在");
+            return result.fill(JsonResponseMsg.CODE_FAIL,"你删除的银行信息不存在");
+        }
+
+        List<BankLink> bankLink = bankLinkMapper.queryByBankId(NumberUtils.toLong(bankId));
+        if(bankLink.size()!=0){
+            return result.fill(JsonResponseMsg.CODE_FAIL,"改银行还有链接存着,不能进行删除");
         }
         bank.setIsEmploy(CommonConstant.NO_EMPLOY);
         bankService.update(bank);
-        return result.fill(JsonResponseMsg.CODE_SUCCESS,"修改排名成功");
+        return result.fill(JsonResponseMsg.CODE_SUCCESS,"删除成功");
     }
-
 
     /**
      * 银行链接列表
@@ -172,15 +177,14 @@ public class BankController {
     @RequestMapping(value = "bankLinkList",method = RequestMethod.GET)
     @ResponseBody
     public JsonResponseMsg bankLinkList(@RequestParam(defaultValue = "10", required = false) Integer limit,
-                                    @RequestParam(defaultValue = "1", required = false) Integer offset, String bankId){
+                                    @RequestParam(defaultValue = "1", required = false) Integer offset, String bankLinkId){
         JsonResponseMsg result = new JsonResponseMsg();
 
-        if(!NumberUtils.isNumber(bankId)){
+        if(!NumberUtils.isNumber(bankLinkId)){
             return result.fill(JsonResponseMsg.CODE_FAIL,"请输入银行Id");
         }
-
         Page<BankLinkDto> page = new Page<>(limit, offset);
-        bankService.bankLinkList(page,NumberUtils.toLong(bankId));
+        bankService.bankLinkList(page,NumberUtils.toLong(bankLinkId));
         Map<String,Object> map = new HashMap<>();
         map.put("page",page);
         return result.fill(JsonResponseMsg.CODE_SUCCESS,"查出成功",map);
@@ -224,7 +228,7 @@ public class BankController {
         }
         bankLink.setUpdatedTime(new Date());
         bankLinkMapper.updateByPrimaryKeySelective(bankLink);
-        return result.fill(JsonResponseMsg.CODE_SUCCESS,"添加链接成功");
+        return result.fill(JsonResponseMsg.CODE_SUCCESS,"修改链接成功");
     }
     /**
      * 删除银行链接
@@ -240,13 +244,13 @@ public class BankController {
         if(bankLink==null){
             return result.fill(JsonResponseMsg.CODE_FAIL,"你要上传银行链接不存在");
         }
-        CooperativeLinkProduct cooperativeLinkProduct =cooperatePartnerStatisticsDayMapper.queryByBankLinkId(NumberUtils.toLong(bankLinkId));
+        CooperativeLinkProduct cooperativeLinkProduct =cooperativeLinkProductMapper.queryByBankLinkId(NumberUtils.toLong(bankLinkId));
         if(cooperativeLinkProduct!=null){
             return result.fill(JsonResponseMsg.CODE_FAIL,"链接有客户正在使用，不能进行删除");
         }
         bankLink.setIsEmploy(CommonConstant.NO_EMPLOY);
         bankLinkMapper.updateByPrimaryKeySelective(bankLink);
-        return result.fill(JsonResponseMsg.CODE_SUCCESS,"添加链接成功");
+        return result.fill(JsonResponseMsg.CODE_SUCCESS,"删除链接成功");
     }
 
 }

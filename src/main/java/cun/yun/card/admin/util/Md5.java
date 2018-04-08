@@ -32,7 +32,7 @@ public class Md5 {
     }
 
     public static void main(String[] args) throws IOException {
-        System.out.println(encrypt32("maozhi2764147"));
+        System.out.println("【浦发银行】您符合浦发银行白金信用卡申请资格，额度高、审批快、免年费、可取现！戳http://t.cn/RmtRwDf退订回T".length());
     }
 
 }

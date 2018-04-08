@@ -158,17 +158,17 @@
     a.iamge,
     a.introduce,
     (
-    SELECT
-    COUNT(1)
-    FROM
-    bank b
-    LEFT JOIN bank_link l ON b.id = l.bank_id
-    AND b.is_employ = 0
-    AND l.is_employ = 0
-    WHERE
-    b.id = a.id
-    GROUP BY
-    b.`name`
+      SELECT
+       COUNT(l.id) count
+      FROM
+      bank b
+      LEFT JOIN bank_link l ON b.id = l.bank_id
+      AND b.is_employ = 0
+      AND l.is_employ = 0
+      WHERE
+      b.id = a.id
+      GROUP BY
+      b.`name`
     ) count,
     a.sort,
     a.price

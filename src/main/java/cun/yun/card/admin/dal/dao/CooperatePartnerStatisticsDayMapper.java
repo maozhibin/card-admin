@@ -14,6 +14,4 @@ public interface CooperatePartnerStatisticsDayMapper {
     int updateByPrimaryKeySelective(CooperatePartnerStatisticsDay record);
 
     int updateByPrimaryKey(CooperatePartnerStatisticsDay record);
-
-    CooperativeLinkProduct queryByBankLinkId(@Param("bankId") Long bankId);
 }

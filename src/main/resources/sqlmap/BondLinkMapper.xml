@@ -65,7 +65,7 @@
   <update id="updateByPrimaryKeySelective" parameterType="cun.yun.card.admin.dal.model.BondLink">
     update bond_link
     <set>
-      <if test="bankId != null">
+      <if test="bondId != null">
         bond_id = #{bondId,jdbcType=BIGINT},
       </if>
       <if test="url != null">
@@ -88,4 +88,57 @@
       updated_time = #{updatedTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=BIGINT}
   </update>
+
+  <select id="queryByBondId" resultMap="BaseResultMap">
+    SELECT
+        l.*
+    FROM
+        bond b
+    LEFT JOIN bond_link l ON b.id = l.bond_id
+    AND b.is_employ = 0
+    WHERE
+        l.is_employ = 0
+    AND l.bond_id =#{bondId}
+  </select>
+
+
+  <select id="bondLinkList" resultType="cun.yun.card.admin.dal.dto.BondLinkDto">
+    SELECT
+      l.id,
+      l.url,
+      l.bond_id bondId,
+      (
+        SELECT
+          NAME
+        FROM
+          bond
+            WHERE
+          id = l.bond_id
+      ) bondName,
+      l.create_time createTime
+      FROM
+      bond_link l
+      LEFT JOIN bond b ON l.bond_id = b.id
+      AND b.is_employ = 0
+    WHERE
+    l.is_employ = 0
+    <if test="bondId !=null">
+      AND l.bond_id = #{bondId}
+    </if>
+  </select>
+
+
+  <select id="totalCount" resultType="int">
+    SELECT
+      COUNT(1) count
+    FROM
+    bond_link l
+    LEFT JOIN bond b ON l.bond_id = b.id
+    AND b.is_employ = 0
+    WHERE
+    l.is_employ = 0
+    <if test="bondId !=null">
+      AND l.bond_id = #{bondId}
+    </if>
+  </select>
 </mapper>

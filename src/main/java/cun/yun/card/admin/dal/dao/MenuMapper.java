@@ -17,9 +17,9 @@ public interface MenuMapper {
 
     int updateByPrimaryKey(Menu record);
 
-    List<MenuDto> queryByAdminIdAndParentId(@Param("adminId") Integer adminId);
+    List<MenuDto> queryByAdminIdAndParentId(@Param("adminId") Long adminId);
 
-    List<MenuDto> queryByAdminId(@Param("adminId") Integer adminId);
+    List<MenuDto> queryByAdminId(@Param("adminId") Long adminId);
 
     List<MenuDto> queryAllInfo();
 

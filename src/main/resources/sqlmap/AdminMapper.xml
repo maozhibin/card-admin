@@ -2,11 +2,10 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cun.yun.card.admin.dal.dao.AdminMapper">
   <resultMap id="BaseResultMap" type="cun.yun.card.admin.dal.model.Admin">
-    <id column="id" jdbcType="INTEGER" property="id" />
+    <id column="id" jdbcType="BIGINT" property="id" />
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="mailbox" jdbcType="VARCHAR" property="mailbox" />
     <result column="mobile" jdbcType="VARCHAR" property="mobile" />
-    <result column="role_id" jdbcType="BIGINT" property="roleId" />
     <result column="password" jdbcType="VARCHAR" property="password" />
     <result column="is_employ" jdbcType="INTEGER" property="isEmploy" />
     <result column="created_time" jdbcType="TIMESTAMP" property="createdTime" />
@@ -14,7 +13,7 @@
     <result column="last_login_time" jdbcType="TIMESTAMP" property="lastLoginTime" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, name, mailbox, mobile, role_id, password, is_employ, created_time, updated_time, 
+    id, name, mailbox, mobile, password, is_employ, created_time, updated_time,
     last_login_time
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
@@ -25,11 +24,11 @@
   </select>
   <insert id="insert" parameterType="cun.yun.card.admin.dal.model.Admin">
     insert into admin (id, name, mailbox, 
-      mobile, role_id, password, 
+      mobile, password,
       is_employ, created_time, updated_time, 
       last_login_time)
-    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{mailbox,jdbcType=VARCHAR}, 
-      #{mobile,jdbcType=VARCHAR}, #{roleId,jdbcType=BIGINT}, #{password,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{mailbox,jdbcType=VARCHAR},
+      #{mobile,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR},
       #{isEmploy,jdbcType=INTEGER}, #{createdTime,jdbcType=TIMESTAMP}, #{updatedTime,jdbcType=TIMESTAMP}, 
       #{lastLoginTime,jdbcType=TIMESTAMP})
   </insert>
@@ -47,9 +46,6 @@
       </if>
       <if test="mobile != null">
         mobile,
-      </if>
-      <if test="roleId != null">
-        role_id,
       </if>
       <if test="password != null">
         password,
@@ -69,7 +65,7 @@
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
-        #{id,jdbcType=INTEGER},
+        #{id,jdbcType=BIGINT},
       </if>
       <if test="name != null">
         #{name,jdbcType=VARCHAR},
@@ -79,9 +75,6 @@
       </if>
       <if test="mobile != null">
         #{mobile,jdbcType=VARCHAR},
-      </if>
-      <if test="roleId != null">
-        #{roleId,jdbcType=BIGINT},
       </if>
       <if test="password != null">
         #{password,jdbcType=VARCHAR},
@@ -112,9 +105,6 @@
       <if test="mobile != null">
         mobile = #{mobile,jdbcType=VARCHAR},
       </if>
-      <if test="roleId != null">
-        role_id = #{roleId,jdbcType=BIGINT},
-      </if>
       <if test="password != null">
         password = #{password,jdbcType=VARCHAR},
       </if>
@@ -131,20 +121,19 @@
         last_login_time = #{lastLoginTime,jdbcType=TIMESTAMP},
       </if>
     </set>
-    where id = #{id,jdbcType=INTEGER}
+    where id = #{id,jdbcType=BIGINT}
   </update>
   <update id="updateByPrimaryKey" parameterType="cun.yun.card.admin.dal.model.Admin">
     update admin
     set name = #{name,jdbcType=VARCHAR},
       mailbox = #{mailbox,jdbcType=VARCHAR},
       mobile = #{mobile,jdbcType=VARCHAR},
-      role_id = #{roleId,jdbcType=BIGINT},
       password = #{password,jdbcType=VARCHAR},
       is_employ = #{isEmploy,jdbcType=INTEGER},
       created_time = #{createdTime,jdbcType=TIMESTAMP},
       updated_time = #{updatedTime,jdbcType=TIMESTAMP},
       last_login_time = #{lastLoginTime,jdbcType=TIMESTAMP}
-    where id = #{id,jdbcType=INTEGER}
+    where id = #{id,jdbcType=BIGINT}
   </update>
   <select id="queryByUserPass" resultMap="BaseResultMap">
     SELECT
@@ -159,13 +148,15 @@
 
 
   <select id="totalCount" resultType="int">
-      SELECT
-      COUNT(1) count
-      FROM
-          admin a
-      LEFT JOIN role r ON a.role_id = r.id
-      AND a.is_employ = 0
-      WHERE r.is_employ = 0
+    SELECT
+       COUNT(1) count
+    FROM
+    admin a
+    LEFT JOIN role_admin ra ON a.id = ra.admin_id
+    AND a.is_employ=0
+    LEFT JOIN role r ON r.id =ra.role_id
+      AND r.is_employ=0
+    WHERE r.is_employ=0
     <if test="name != null and name !=''">
       AND a.name = #{name,jdbcType=VARCHAR}
     </if>
@@ -173,18 +164,21 @@
 
   <select id="adminList" resultType="cun.yun.card.admin.dal.dto.AdminDto">
     SELECT
-        a.id,
-        a.`name` userName,
-        a.mailbox,
-        a.mobile,
-        a.last_login_time lastLoginTime,
-        a.role_id roleId,
-        r.`name` roleName
+      a.id,
+      a.`name` userName,
+      a.mailbox,
+      a.mobile,
+      a.last_login_time lastLoginTime,
+      r.`name` roleName,
+      r.id roleId
     FROM
-        admin a
-    LEFT JOIN role r ON a.role_id = r.id
-    AND a.is_employ = 0
-    WHERE r.is_employ = 0
+      admin a
+    LEFT JOIN role_admin ra ON a.id = ra.admin_id
+     AND a.is_employ = 0
+    LEFT JOIN role r ON r.id = ra.role_id
+     AND r.is_employ = 0
+    WHERE
+      r.is_employ = 0
     <if test="name != null and name !=''">
       AND a.name = #{name,jdbcType=VARCHAR}
     </if>

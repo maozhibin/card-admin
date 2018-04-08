@@ -12,4 +12,6 @@ public interface CooperativePartnerLinkMapper {
     int updateByPrimaryKeySelective(CooperativePartnerLink record);
 
     int updateByPrimaryKey(CooperativePartnerLink record);
+
+    int insertLink(CooperativePartnerLink cooperativePartnerLink);
 }

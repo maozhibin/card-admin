@@ -23,4 +23,7 @@ public interface BondMapper {
 
     List<BondDto> bondList(@Param("begin") int offset, @Param("end")int limit, @Param("name") String name);
 
+    Bond queryByBondName(@Param("name") String name);
+
+    Integer queryMaxSort();
 }

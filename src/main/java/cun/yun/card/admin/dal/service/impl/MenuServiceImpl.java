@@ -20,12 +20,12 @@ public class MenuServiceImpl implements MenuService {
     private MenuMapper menuMapper;
 
     @Override
-    public List<MenuDto> queryByAdminIdAndParentId(Integer adminId) {
+    public List<MenuDto> queryByAdminIdAndParentId( Long adminId) {
         return menuMapper.queryByAdminIdAndParentId(adminId);
     }
 
     @Override
-    public List<MenuDto> queryByAdminId(Integer adminId) {
+    public List<MenuDto> queryByAdminId(Long adminId) {
         return menuMapper.queryByAdminId(adminId);
     }
 

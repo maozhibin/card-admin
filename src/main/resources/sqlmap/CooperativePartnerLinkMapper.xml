@@ -5,12 +5,14 @@
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="cooperative_partner_id" jdbcType="BIGINT" property="cooperativePartnerId" />
     <result column="url" jdbcType="VARCHAR" property="url" />
+    <result column="product_type" jdbcType="TIMESTAMP" property="productType" />
     <result column="link_type" jdbcType="INTEGER" property="linkType" />
     <result column="is_employ" jdbcType="INTEGER" property="isEmploy" />
     <result column="updated_time" jdbcType="TIMESTAMP" property="updatedTime" />
+    <result column="created_time" jdbcType="TIMESTAMP" property="createdTime" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, cooperative_partner_id, url, link_type, is_employ, updated_time
+    id, cooperative_partner_id, url,product_type, link_type, is_employ, updated_time,createdTime
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -19,11 +21,11 @@
     where id = #{id,jdbcType=BIGINT}
   </select>
   <insert id="insert" parameterType="cun.yun.card.admin.dal.model.CooperativePartnerLink">
-    insert into cooperative_partner_link (id, cooperative_partner_id, url, 
-      link_type, is_employ, updated_time
+    insert into cooperative_partner_link (id, cooperative_partner_id, url, product_type,
+      link_type, is_employ, updated_time,created_time
       )
-    values (#{id,jdbcType=BIGINT}, #{cooperativePartnerId,jdbcType=BIGINT}, #{url,jdbcType=VARCHAR}, 
-      #{linkType,jdbcType=INTEGER}, #{isEmploy,jdbcType=INTEGER}, #{updatedTime,jdbcType=TIMESTAMP}
+    values (#{id,jdbcType=BIGINT}, #{cooperativePartnerId,jdbcType=BIGINT}, #{url,jdbcType=VARCHAR}, #{productType,jdbcType=VARCHAR},
+      #{linkType,jdbcType=INTEGER}, #{isEmploy,jdbcType=INTEGER}, #{updatedTime,jdbcType=TIMESTAMP},#{createdTime,jdbcType=TIMESTAMP}
       )
   </insert>
   <insert id="insertSelective" parameterType="cun.yun.card.admin.dal.model.CooperativePartnerLink">
@@ -38,6 +40,9 @@
       <if test="url != null">
         url,
       </if>
+      <if test="productType != null">
+        product_type,
+      </if>
       <if test="linkType != null">
         link_type,
       </if>
@@ -46,6 +51,9 @@
       </if>
       <if test="updatedTime != null">
         updated_time,
+      </if>
+      <if test="createdTime != null">
+        created_time,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -58,6 +66,9 @@
       <if test="url != null">
         #{url,jdbcType=VARCHAR},
       </if>
+      <if test="productType != null">
+        #{productType,jdbcType=VARCHAR},
+      </if>
       <if test="linkType != null">
         #{linkType,jdbcType=INTEGER},
       </if>
@@ -66,6 +77,9 @@
       </if>
       <if test="updatedTime != null">
         #{updatedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdTime != null">
+        createdTime,
       </if>
     </trim>
   </insert>
@@ -78,6 +92,9 @@
       <if test="url != null">
         url = #{url,jdbcType=VARCHAR},
       </if>
+      <if test="productType != null">
+        product_type = #{productType,jdbcType=VARCHAR},
+      </if>
       <if test="linkType != null">
         link_type = #{linkType,jdbcType=INTEGER},
       </if>
@@ -87,6 +104,9 @@
       <if test="updatedTime != null">
         updated_time = #{updatedTime,jdbcType=TIMESTAMP},
       </if>
+      <if test="createdTime != null">
+        created_time,
+      </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
@@ -94,9 +114,21 @@
     update cooperative_partner_link
     set cooperative_partner_id = #{cooperativePartnerId,jdbcType=BIGINT},
       url = #{url,jdbcType=VARCHAR},
+      product_type = #{productType,jdbcType=VARCHAR},
       link_type = #{linkType,jdbcType=INTEGER},
       is_employ = #{isEmploy,jdbcType=INTEGER},
-      updated_time = #{updatedTime,jdbcType=TIMESTAMP}
+      updated_time = #{updatedTime,jdbcType=TIMESTAMP},
+      created_time = #{createdTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=BIGINT}
   </update>
+
+  <insert id="insertLink" parameterType="cun.yun.card.admin.dal.model.CooperativePartnerLink" useGeneratedKeys="true" keyProperty="id">
+    insert into cooperative_partner_link (id, cooperative_partner_id, url, product_type,
+    link_type, is_employ, updated_time,created_time
+    )
+    values (#{id,jdbcType=BIGINT}, #{cooperativePartnerId,jdbcType=BIGINT}, #{url,jdbcType=VARCHAR}, #{productType,jdbcType=VARCHAR},
+    #{linkType,jdbcType=INTEGER}, #{isEmploy,jdbcType=INTEGER}, #{updatedTime,jdbcType=TIMESTAMP},#{createdTime,jdbcType=TIMESTAMP}
+    )
+  </insert>
+
 </mapper>

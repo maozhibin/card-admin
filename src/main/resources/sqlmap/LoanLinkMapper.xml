@@ -7,9 +7,10 @@
     <result column="url" jdbcType="VARCHAR" property="url" />
     <result column="is_employ" jdbcType="INTEGER" property="isEmploy" />
     <result column="updated_time" jdbcType="TIMESTAMP" property="updatedTime" />
+    <result column="created_time" jdbcType="TIMESTAMP" property="createdTime" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, loan_id, url, is_employ, updated_time
+    id, loan_id, url, is_employ, updated_time,created_time
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -19,9 +20,9 @@
   </select>
   <insert id="insert" parameterType="cun.yun.card.admin.dal.model.LoanLink">
     insert into loan_link (id, loan_id, url, 
-      is_employ, updated_time)
+      is_employ, updated_time,created_time)
     values (#{id,jdbcType=BIGINT}, #{loanId,jdbcType=BIGINT}, #{url,jdbcType=VARCHAR}, 
-      #{isEmploy,jdbcType=INTEGER}, #{updatedTime,jdbcType=TIMESTAMP})
+      #{isEmploy,jdbcType=INTEGER}, #{updatedTime,jdbcType=TIMESTAMP}, #{createdTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="cun.yun.card.admin.dal.model.LoanLink">
     insert into loan_link
@@ -41,6 +42,9 @@
       <if test="updatedTime != null">
         updated_time,
       </if>
+      <if test="createdTime != null">
+        created_time,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -57,6 +61,9 @@
       </if>
       <if test="updatedTime != null">
         #{updatedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdTime != null">
+        #{createdTime,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
@@ -75,6 +82,9 @@
       <if test="updatedTime != null">
         updated_time = #{updatedTime,jdbcType=TIMESTAMP},
       </if>
+      <if test="createdTime != null">
+        #{created_time,jdbcType=TIMESTAMP},
+      </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
@@ -84,6 +94,46 @@
       url = #{url,jdbcType=VARCHAR},
       is_employ = #{isEmploy,jdbcType=INTEGER},
       updated_time = #{updatedTime,jdbcType=TIMESTAMP}
+      created_time = #{createdTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=BIGINT}
   </update>
+
+  <select id="queryByLoanId" resultMap="BaseResultMap">
+    SELECT
+        *
+    FROM
+        loan_link
+    WHERE is_employ=0
+    AND loan_id =#{loanId}
+  </select>
+
+  <select id="totalCount" resultType="int">
+    SELECT
+        COUNT(1)
+    FROM
+        loan_link k
+    LEFT JOIN loan l ON k.loan_id = l.id
+    AND k.is_employ = 0
+    WHERE
+        l.is_employ = 0
+    <if test="loanId !=null">
+      AND k.loan_id = #{loanId}
+    </if>
+  </select>
+
+  <select id="loanLinkList" resultType="cun.yun.card.admin.dal.dto.LoanLinkDto">
+    SELECT
+      k.*,
+      l.`name` loanName,
+      l.id loanId
+    FROM
+    loan_link k
+    LEFT JOIN loan l ON k.loan_id = l.id
+    AND k.is_employ = 0
+    WHERE
+    l.is_employ = 0
+    <if test="loanId !=null">
+      AND k.loan_id = #{loanId}
+    </if>
+  </select>
 </mapper>

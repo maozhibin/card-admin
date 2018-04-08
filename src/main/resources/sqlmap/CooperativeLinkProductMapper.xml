@@ -5,12 +5,13 @@
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="cooperative_partner_link_id" jdbcType="BIGINT" property="cooperativePartnerLinkId" />
     <result column="type" jdbcType="CHAR" property="type" />
-    <result column="link_id" jdbcType="CHAR" property="linkId" />
+    <result column="link_id" jdbcType="BIGINT" property="linkId" />
     <result column="is_employ" jdbcType="INTEGER" property="isEmploy" />
     <result column="updated_time" jdbcType="TIMESTAMP" property="updatedTime" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, cooperative_partner_link_id, type, link_id, is_employ, updated_time
+    id, cooperative_partner_link_id, type, link_id, is_employ, updated_time,create_time
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -20,10 +21,10 @@
   </select>
   <insert id="insert" parameterType="cun.yun.card.admin.dal.model.CooperativeLinkProduct">
     insert into cooperative_link_product (id, cooperative_partner_link_id, type, 
-      link_id, is_employ, updated_time
+      link_id, is_employ, updated_time,create_time
       )
     values (#{id,jdbcType=BIGINT}, #{cooperativePartnerLinkId,jdbcType=BIGINT}, #{type,jdbcType=CHAR}, 
-      #{linkId,jdbcType=CHAR}, #{isEmploy,jdbcType=INTEGER}, #{updatedTime,jdbcType=TIMESTAMP}
+      #{linkId,jdbcType=BIGINT}, #{isEmploy,jdbcType=INTEGER}, #{updatedTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP}
       )
   </insert>
   <insert id="insertSelective" parameterType="cun.yun.card.admin.dal.model.CooperativeLinkProduct">
@@ -47,6 +48,9 @@
       <if test="updatedTime != null">
         updated_time,
       </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -59,13 +63,16 @@
         #{type,jdbcType=CHAR},
       </if>
       <if test="linkId != null">
-        #{linkId,jdbcType=CHAR},
+        #{linkId,jdbcType=BIGINT},
       </if>
       <if test="isEmploy != null">
         #{isEmploy,jdbcType=INTEGER},
       </if>
       <if test="updatedTime != null">
         #{updatedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
@@ -79,13 +86,16 @@
         type = #{type,jdbcType=CHAR},
       </if>
       <if test="linkId != null">
-        link_id = #{linkId,jdbcType=CHAR},
+        link_id = #{linkId,jdbcType=BIGINT},
       </if>
       <if test="isEmploy != null">
         is_employ = #{isEmploy,jdbcType=INTEGER},
       </if>
       <if test="updatedTime != null">
         updated_time = #{updatedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
@@ -94,9 +104,54 @@
     update cooperative_link_product
     set cooperative_partner_link_id = #{cooperativePartnerLinkId,jdbcType=BIGINT},
       type = #{type,jdbcType=CHAR},
-      link_id = #{linkId,jdbcType=CHAR},
+      link_id = #{linkId,jdbcType=BIGINT},
       is_employ = #{isEmploy,jdbcType=INTEGER},
-      updated_time = #{updatedTime,jdbcType=TIMESTAMP}
+      updated_time = #{updatedTime,jdbcType=TIMESTAMP},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=BIGINT}
   </update>
+
+
+  <select id="queryByBankLinkId" resultMap="BaseResultMap">
+    SELECT
+    *
+    FROM
+    cooperative_link_product
+    WHERE is_employ=0
+    AND type=1
+    AND link_id =#{bankId}
+  </select>
+
+  <select id="queryByBondLinkId" resultMap="BaseResultMap">
+    SELECT
+    *
+    FROM
+    cooperative_link_product
+    WHERE is_employ=0
+    AND type=3
+    AND link_id =#{bondId}
+  </select>
+
+
+  <select id="queryByLoanLinkId" resultMap="BaseResultMap">
+    SELECT
+    *
+    FROM
+    cooperative_link_product
+    WHERE is_employ=0
+    AND type=2
+    AND link_id =#{LoanLinkId}
+  </select>
+
+
+  <insert id="insertList">
+    INSERT INTO cooperative_link_product(cooperative_partner_link_id,type,link_id,is_employ,updated_time,create_time)
+    VALUES
+    <foreach collection="cooperativeLinkProducts" item="cooperativeLinkProduct" separator=",">
+      (#{cooperativeLinkProduct.cooperativePartnerLinkId},
+       #{cooperativeLinkProduct.type}#{cooperativeLinkProduct.linkId},#{cooperativeLinkProduct.isEmploy},
+      #{cooperativeLinkProduct.updatedTime},#{cooperativeLinkProduct.createTime})
+    </foreach>
+  </insert>
+
 </mapper>

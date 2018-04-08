@@ -7,9 +7,9 @@ import cun.yun.card.admin.dal.model.Menu;
 import java.util.List;
 
 public interface MenuService {
-    List<MenuDto> queryByAdminIdAndParentId(Integer adminId);
+    List<MenuDto> queryByAdminIdAndParentId(Long id);
 
-    List<MenuDto> queryByAdminId(Integer adminId);
+    List<MenuDto> queryByAdminId(Long adminId);
 
     List<MenuDto> queryAllInfo();
 

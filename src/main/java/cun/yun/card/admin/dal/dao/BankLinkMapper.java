@@ -20,4 +20,6 @@ public interface BankLinkMapper {
     List<BankLinkDto> bankLinkList(@Param("begin") int offset, @Param("end")int limit, @Param("bankId") Long bankId);
 
     int totalCount(@Param("bankId") Long bankId);
+
+    List<BankLink> queryByBankId(@Param("bankId") Long bankId);
 }

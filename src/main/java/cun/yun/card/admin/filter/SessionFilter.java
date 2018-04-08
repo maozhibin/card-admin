@@ -72,7 +72,7 @@ public class SessionFilter  implements Filter {
                     return ;
                 }
                 //查询改用户所有的权限菜单
-                List<MenuDto> menus  = menuService.queryByAdminId(NumberUtils.toInt(adminId));
+                List<MenuDto> menus  = menuService.queryByAdminId(NumberUtils.toLong(adminId));
                 List<String> urls = new ArrayList<>();
                 for (MenuDto menu:menus) {
                     urls.add(menu.getUrl());

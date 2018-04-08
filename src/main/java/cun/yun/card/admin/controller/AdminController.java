@@ -2,12 +2,14 @@ package cun.yun.card.admin.controller;
 
 import cun.yun.card.admin.common.CommonConstant;
 import cun.yun.card.admin.common.Util;
+import cun.yun.card.admin.dal.dao.RoleAdminMapper;
 import cun.yun.card.admin.dal.dto.AdminDto;
 import cun.yun.card.admin.dal.dto.AdminUnpdtePwdDto;
 import cun.yun.card.admin.dal.dto.MenuDto;
 import cun.yun.card.admin.dal.ext.Page;
 import cun.yun.card.admin.dal.model.Admin;
 import cun.yun.card.admin.dal.model.Menu;
+import cun.yun.card.admin.dal.model.RoleAdmin;
 import cun.yun.card.admin.dal.service.AdminService;
 import cun.yun.card.admin.dal.service.MenuService;
 import cun.yun.card.admin.dal.service.RedisService;
@@ -33,6 +35,9 @@ public class AdminController {
     private MenuService menuService;
     @Resource
     private RedisService redisService;
+    @Resource
+    private RoleAdminMapper roleAdminMapper;
+
 
     @RequestMapping(value = "/login",method = RequestMethod.POST)
     @ResponseBody
@@ -47,7 +52,6 @@ public class AdminController {
             return result.fill(JsonResponseMsg.CODE_FAIL,"账号或者密码错误");
         }
         admin.setLastLoginTime(new Date());
-
         //登录状态存储到redis中
         Object token = admin.getId()+new Date().getTime();
         redisService.set(String.valueOf(admin.getId()),token,3000L);
@@ -138,7 +142,8 @@ public class AdminController {
         if(adminDto.getRoleId()==null){
             return result.fill(JsonResponseMsg.CODE_FAIL,"请选择角色");
         }
-        admin.setRoleId(adminDto.getRoleId());
+
+
         if(StringUtils.isEmpty(adminDto.getPassword())){
             return result.fill(JsonResponseMsg.CODE_FAIL,"请输入密码");
         }
@@ -147,6 +152,12 @@ public class AdminController {
         admin.setIsEmploy(0);
         admin.setUpdatedTime(new Date());
         adminService.insert(admin);
+
+        admin = adminService.queryByUserName(admin.getName());
+        RoleAdmin roleAdmin = new RoleAdmin();
+        roleAdmin.setAdminId(admin.getId());
+        roleAdmin.setRoleId(adminDto.getRoleId());
+        roleAdminMapper.insertSelective(roleAdmin);
         return result.fill(JsonResponseMsg.CODE_SUCCESS,"添加成功");
     }
 
@@ -188,14 +199,14 @@ public class AdminController {
         if(adminDto.getRoleId()==null){
             return result.fill(JsonResponseMsg.CODE_FAIL,"请选择角色");
         }
-        admin.setRoleId(adminDto.getRoleId());
-        if(StringUtils.isEmpty(adminDto.getPassword())){
-            return result.fill(JsonResponseMsg.CODE_FAIL,"请输入密码");
-        }
+        RoleAdmin roleAdmin = new RoleAdmin();
+        roleAdmin.setAdminId(adminDto.getId());
+        roleAdmin.setRoleId(adminDto.getRoleId());
         admin.setPassword(adminDto.getPassword());
         admin.setIsEmploy(0);
         admin.setUpdatedTime(new Date());
         adminService.update(admin);
+        roleAdminMapper.insertSelective(roleAdmin);
         return result.fill(JsonResponseMsg.CODE_SUCCESS,"修改成");
     }
 

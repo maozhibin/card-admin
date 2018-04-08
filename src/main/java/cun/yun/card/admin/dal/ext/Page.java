@@ -25,8 +25,8 @@ public class Page<T> {
 
     public Page(int limit, int offset) {
         if(offset > 1){
-            this.limit = offset*limit+limit;
-            this.offset = offset*limit;
+            this.limit = (offset-1)*limit+limit;
+            this.offset = (offset-1)*limit;
         }else if(offset==1){
             this.limit = limit;
             offset=0;

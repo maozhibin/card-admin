@@ -9,12 +9,13 @@
     <result column="sort" jdbcType="INTEGER" property="sort" />
     <result column="is_employ" jdbcType="INTEGER" property="isEmploy" />
     <result column="updated_time" jdbcType="TIMESTAMP" property="updatedTime" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
   </resultMap>
   <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="cun.yun.card.admin.dal.model.Bond">
     <result column="introduce" jdbcType="LONGVARCHAR" property="introduce" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, name, iamge, price, sort, is_employ, updated_time
+    id, name, iamge, price, sort, is_employ, updated_time,create_time
   </sql>
   <sql id="Blob_Column_List">
     introduce
@@ -28,10 +29,10 @@
     where id = #{id,jdbcType=BIGINT}
   </select>
   <insert id="insert" parameterType="cun.yun.card.admin.dal.model.Bond">
-    insert into bond (id, name, iamge, 
+    insert into bond (id, name, iamge,
       price, sort, is_employ, 
       updated_time, introduce)
-    values (#{id,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{iamge,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{iamge,jdbcType=VARCHAR},
       #{price,jdbcType=DECIMAL}, #{sort,jdbcType=INTEGER}, #{isEmploy,jdbcType=INTEGER}, 
       #{updatedTime,jdbcType=TIMESTAMP}, #{introduce,jdbcType=LONGVARCHAR})
   </insert>
@@ -59,6 +60,9 @@
       <if test="updatedTime != null">
         updated_time,
       </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
       <if test="introduce != null">
         introduce,
       </if>
@@ -85,6 +89,9 @@
       <if test="updatedTime != null">
         #{updatedTime,jdbcType=TIMESTAMP},
       </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
       <if test="introduce != null">
         #{introduce,jdbcType=LONGVARCHAR},
       </if>
@@ -110,6 +117,9 @@
       </if>
       <if test="updatedTime != null">
         updated_time = #{updatedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
       <if test="introduce != null">
         introduce = #{introduce,jdbcType=LONGVARCHAR},
@@ -142,12 +152,12 @@
   <select id="bondList" resultType="cun.yun.card.admin.dal.dto.BondDto">
     SELECT
         a.id,
-        a.`name` bankName,
+        a.`name` bondName,
         a.iamge,
         a.introduce,
         (
             SELECT
-                COUNT(1)
+                COUNT(l.id) count
             FROM
                 bond b
             LEFT JOIN bond_link l ON b.id = l.bond_id
@@ -180,6 +190,26 @@
     <if test="name != null and name !=''">
       AND name = #{name,jdbcType=VARCHAR}
     </if>
+  </select>
+
+
+  <select id="queryByBondName" resultMap="BaseResultMap">
+    SELECT
+      *
+    FROM
+    bond
+    WHERE is_employ=0
+    <if test="name != null and name !=''">
+      AND name = #{name,jdbcType=VARCHAR}
+    </if>
+  </select>
+
+  <select id="queryMaxSort" resultType="int">
+    SELECT
+        MAX(sort)
+    FROM
+        bond
+    WHERE is_employ=0
   </select>
 
 </mapper>

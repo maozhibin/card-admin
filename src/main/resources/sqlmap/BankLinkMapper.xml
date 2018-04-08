@@ -128,4 +128,16 @@
       AND l.bank_id = #{bankId}
     </if>
   </select>
+
+
+  <select id="queryByBankId" resultMap="BaseResultMap">
+    SELECT
+        *
+    FROM
+        bank b
+    LEFT JOIN bank_link l ON b.id = l.bank_id
+    AND b.is_employ = 0
+    WHERE l.is_employ =0
+    AND l.bank_id = #{bankId}
+  </select>
 </mapper>

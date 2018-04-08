@@ -126,4 +126,16 @@
       updated_time = #{updatedTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=BIGINT}
   </update>
+
+  <select id="queryByAdminId" resultMap="BaseResultMap">
+      SELECT
+          p.*
+      FROM
+          cooperative_partner p
+      LEFT JOIN admin_cooperative_partner ap ON ap.cooperative_partner_id = p.id
+      AND p.is_employ = 0
+      LEFT JOIN admin a ON a.id = ap.admin_id
+      WHERE a.is_employ = 0
+      AND a.id=#{adminId}
+  </select>
 </mapper>

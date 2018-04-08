@@ -7,13 +7,14 @@
     <result column="price" jdbcType="DECIMAL" property="price" />
     <result column="limit_min" jdbcType="DECIMAL" property="limitMin" />
     <result column="limit_max" jdbcType="DECIMAL" property="limitMax" />
+    <result column="sort" jdbcType="INTEGER" property="sort" />
     <result column="money_rate" jdbcType="DOUBLE" property="moneyRate" />
     <result column="image" jdbcType="VARCHAR" property="image" />
     <result column="is_employ" jdbcType="INTEGER" property="isEmploy" />
     <result column="updated_time" jdbcType="TIMESTAMP" property="updatedTime" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, name, price, limit_min, limit_max, money_rate, image, is_employ, updated_time
+    id, name, sort,price, limit_min, limit_max, money_rate, image, is_employ, updated_time
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -24,11 +25,11 @@
   <insert id="insert" parameterType="cun.yun.card.admin.dal.model.Loan">
     insert into loan (id, name, price, 
       limit_min, limit_max, money_rate, 
-      image, is_employ, updated_time
+      image, is_employ, updated_time,sort
       )
     values (#{id,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{price,jdbcType=DECIMAL}, 
       #{limitMin,jdbcType=DECIMAL}, #{limitMax,jdbcType=DECIMAL}, #{moneyRate,jdbcType=DOUBLE}, 
-      #{image,jdbcType=VARCHAR}, #{isEmploy,jdbcType=INTEGER}, #{updatedTime,jdbcType=TIMESTAMP}
+      #{image,jdbcType=VARCHAR}, #{isEmploy,jdbcType=INTEGER}, #{updatedTime,jdbcType=TIMESTAMP},#{sort,jdbcType=INTEGER}
       )
   </insert>
   <insert id="insertSelective" parameterType="cun.yun.card.admin.dal.model.Loan">
@@ -39,6 +40,9 @@
       </if>
       <if test="name != null">
         name,
+      </if>
+      <if test="sort != null">
+        sort,
       </if>
       <if test="price != null">
         price,
@@ -69,6 +73,9 @@
       <if test="name != null">
         #{name,jdbcType=VARCHAR},
       </if>
+      <if test="sort != null">
+        #{sort,jdbcType=INTEGER},
+      </if>
       <if test="price != null">
         #{price,jdbcType=DECIMAL},
       </if>
@@ -97,6 +104,9 @@
     <set>
       <if test="name != null">
         name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null">
+        sort = #{sort,jdbcType=INTEGER},
       </if>
       <if test="price != null">
         price = #{price,jdbcType=DECIMAL},
@@ -134,4 +144,47 @@
       updated_time = #{updatedTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=BIGINT}
   </update>
+
+  <select id="totalCount" resultType="int">
+    SELECT
+        COUNT(1)
+    FROM
+        loan
+    WHERE is_employ=0
+    <if test="name != null and name !=''">
+      AND name = #{name,jdbcType=VARCHAR}
+    </if>
+  </select>
+
+  <select id="loanList" resultMap="BaseResultMap">
+    SELECT
+      *
+    FROM
+    loan
+    WHERE is_employ=0
+    <if test="name != null and name !=''">
+      AND name = #{name,jdbcType=VARCHAR}
+    </if>
+    ORDER BY sort
+    LIMIT #{begin},#{end}
+  </select>
+
+  <select id="queryByLoanName" resultMap="BaseResultMap">
+    SELECT
+    *
+    FROM
+    loan
+    WHERE is_employ=0
+    <if test="name != null and name !=''">
+      AND name = #{name,jdbcType=VARCHAR}
+    </if>
+  </select>
+
+  <select id="queryMaxSort" resultType="int">
+      SELECT
+          MAX(sort)
+      FROM
+          loan
+      WHERE is_employ=0
+  </select>
 </mapper>
